@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.ibm.com/schemas/ibm-mq/queue.json",
+  "title": "IBM MQ Queue",
+  "description": "An IBM MQ queue is a named object that stores messages for asynchronous consumption. Queues can be local, alias, remote, model, or cluster types, each serving different messaging patterns.",
+  "type": "object",
+  "required": ["name", "type"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the queue",
+      "minLength": 1,
+      "maxLength": 48,
+      "pattern": "^[A-Za-z0-9._/%]+$"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["local", "alias", "remote", "model", "cluster"],
+      "description": "Type of the queue"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the queue",
+      "maxLength": 64
+    },
+    "maximumDepth": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 999999999,
+      "description": "Maximum number of messages that can be stored on the queue"
+    },
+    "maximumMessageLength": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 104857600,
+      "description": "Maximum message length in bytes for messages on this queue"
+    },
+    "inhibitPut": {
+      "type": "boolean",
+      "description": "Whether put operations are inhibited on this queue"
+    },
+    "inhibitGet": {
+      "type": "boolean",
+      "description": "Whether get operations are inhibited on this queue"
+    },
+    "defaultPersistence": {
+      "type": "string",
+      "enum": ["persistent", "notPersistent"],
+      "description": "Default persistence for messages put on this queue"
+    },
+    "defaultPriority": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9,
+      "description": "Default priority for messages put on this queue"
+    },
+    "backoutThreshold": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of times a message can be backed out before being moved"
+    },
+    "backoutRequeueQueue": {
+      "type": "string",
+      "description": "Queue to which messages are moved after exceeding the backout threshold",
+      "maxLength": 48
+    },
+    "isTransmissionQueue": {
+      "type": "boolean",
+      "description": "Whether this queue is used as a transmission queue for remote messaging"
+    },
+    "triggerControl": {
+      "type": "string",
+      "enum": ["on", "off"],
+      "description": "Whether triggering is enabled for this queue"
+    },
+    "triggerType": {
+      "type": "string",
+      "enum": ["none", "first", "every", "depth"],
+      "description": "Type of triggering configured for this queue"
+    },
+    "shareability": {
+      "type": "string",
+      "enum": ["shareable", "notShareable"],
+      "description": "Whether the queue can be opened by multiple applications simultaneously"
+    },
+    "currentDepth": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Current number of messages on the queue"
+    },
+    "openInputCount": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of handles currently open for input (get)"
+    },
+    "openOutputCount": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of handles currently open for output (put)"
+    },
+    "lastPut": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of the last message put on the queue"
+    },
+    "lastGet": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of the last message retrieved from the queue"
+    },
+    "alias": {
+      "$ref": "#/$defs/AliasProperties"
+    },
+    "remote": {
+      "$ref": "#/$defs/RemoteProperties"
+    },
+    "cluster": {
+      "$ref": "#/$defs/ClusterProperties"
+    }
+  },
+  "$defs": {
+    "AliasProperties": {
+      "type": "object",
+      "description": "Properties specific to alias queues",
+      "properties": {
+        "baseQueueName": {
+          "type": "string",
+          "description": "Name of the base queue or topic that this alias resolves to"
+        },
+        "baseType": {
+          "type": "string",
+          "enum": ["queue", "topic"],
+          "description": "Whether the alias resolves to a queue or topic"
+        }
+      }
+    },
+    "RemoteProperties": {
+      "type": "object",
+      "description": "Properties specific to remote queue definitions",
+      "properties": {
+        "remoteQueueName": {
+          "type": "string",
+          "description": "Name of the queue on the remote queue manager"
+        },
+        "remoteQueueManager": {
+          "type": "string",
+          "description": "Name of the remote queue manager"
+        },
+        "transmissionQueue": {
+          "type": "string",
+          "description": "Name of the transmission queue to use"
+        }
+      }
+    },
+    "ClusterProperties": {
+      "type": "object",
+      "description": "Properties specific to cluster queues",
+      "properties": {
+        "clusterName": {
+          "type": "string",
+          "description": "Name of the cluster this queue belongs to"
+        },
+        "clusterNamelist": {
+          "type": "string",
+          "description": "Name of the namelist of clusters this queue belongs to"
+        },
+        "defaultBind": {
+          "type": "string",
+          "enum": ["onOpen", "notFixed", "onGroup"],
+          "description": "Default binding for cluster queue"
+        }
+      }
+    }
+  }
+}

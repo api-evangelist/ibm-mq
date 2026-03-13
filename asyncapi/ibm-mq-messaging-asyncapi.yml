@@ -1,0 +1,332 @@
+asyncapi: 2.6.0
+info:
+  title: IBM MQ Messaging
+  version: '9.3'
+  description: >-
+    Asynchronous messaging interface for IBM MQ, supporting point-to-point
+    queue-based messaging and publish/subscribe topic-based messaging. Defines
+    the channels, operations, and message formats for applications integrating
+    with IBM MQ via JMS, AMQP, or the native MQI protocol.
+  contact:
+    name: IBM Support
+    url: https://www.ibm.com/mysupport
+    email: support@ibm.com
+  license:
+    name: IBM License
+    url: https://www.ibm.com/terms
+  externalDocs:
+    description: IBM MQ Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest
+defaultContentType: application/json
+
+servers:
+  production:
+    url: '{host}:{port}'
+    protocol: ibmmq
+    protocolVersion: '9.3'
+    description: IBM MQ queue manager connection
+    variables:
+      host:
+        default: localhost
+        description: Hostname of the MQ queue manager
+      port:
+        default: '1414'
+        description: Listener port of the MQ queue manager
+    security:
+      - mqAuth: []
+    bindings:
+      ibmmq:
+        groupId: PRODUCTION
+        cipherSpec: TLS_AES_256_GCM_SHA384
+        bindingVersion: 0.1.0
+  production-amqp:
+    url: '{host}:{amqpPort}'
+    protocol: amqp
+    protocolVersion: '1.0'
+    description: IBM MQ AMQP 1.0 connection
+    variables:
+      host:
+        default: localhost
+        description: Hostname of the MQ queue manager
+      amqpPort:
+        default: '5672'
+        description: AMQP listener port
+    security:
+      - mqAuth: []
+
+channels:
+  queue/{queueName}:
+    description: >-
+      Point-to-point messaging channel for sending and receiving messages on
+      an IBM MQ local queue. Messages are delivered to exactly one consumer.
+    parameters:
+      queueName:
+        description: Name of the IBM MQ queue
+        schema:
+          type: string
+          maxLength: 48
+          pattern: '^[A-Za-z0-9._/%]+$'
+    publish:
+      operationId: sendToQueue
+      summary: Send a message to a queue
+      description: >-
+        Put a message onto the specified MQ queue for asynchronous processing
+        by a consuming application.
+      message:
+        $ref: '#/components/messages/MQMessage'
+      bindings:
+        ibmmq:
+          type: jms
+          description: JMS message binding
+          bindingVersion: 0.1.0
+    subscribe:
+      operationId: receiveFromQueue
+      summary: Receive a message from a queue
+      description: >-
+        Get a message from the specified MQ queue. Supports both synchronous
+        get with wait and asynchronous message-driven consumption.
+      message:
+        $ref: '#/components/messages/MQMessage'
+      bindings:
+        ibmmq:
+          type: jms
+          bindingVersion: 0.1.0
+    bindings:
+      ibmmq:
+        destinationType: queue
+        queue:
+          objectName: '{queueName}'
+          isPartitioned: false
+          exclusive: false
+        bindingVersion: 0.1.0
+
+  topic/{topicString}:
+    description: >-
+      Publish/subscribe messaging channel for IBM MQ topics. Messages
+      published to a topic are delivered to all active subscribers matching
+      the topic string pattern.
+    parameters:
+      topicString:
+        description: >-
+          IBM MQ topic string, supporting hierarchical topic levels separated
+          by forward slashes. Wildcards # (multi-level) and + (single-level)
+          are supported for subscriptions.
+        schema:
+          type: string
+    publish:
+      operationId: publishToTopic
+      summary: Publish a message to a topic
+      description: >-
+        Publish a message to the specified topic string. The message is
+        distributed to all matching subscribers.
+      message:
+        $ref: '#/components/messages/MQMessage'
+      bindings:
+        ibmmq:
+          type: jms
+          bindingVersion: 0.1.0
+    subscribe:
+      operationId: subscribeToTopic
+      summary: Subscribe to a topic
+      description: >-
+        Create a subscription to receive messages matching the topic string.
+        Supports both durable and non-durable subscriptions with wildcard
+        topic patterns.
+      message:
+        $ref: '#/components/messages/MQMessage'
+      bindings:
+        ibmmq:
+          type: jms
+          bindingVersion: 0.1.0
+    bindings:
+      ibmmq:
+        destinationType: topic
+        topic:
+          string: '{topicString}'
+          objectName: ''
+          durablePermitted: true
+          lastMsgRetained: false
+        bindingVersion: 0.1.0
+
+  deadLetterQueue:
+    description: >-
+      Dead-letter queue for messages that cannot be delivered to their
+      intended destination. Undeliverable messages are routed here with
+      a dead-letter header containing the reason for failure.
+    subscribe:
+      operationId: receiveDeadLetterMessage
+      summary: Receive undeliverable messages
+      description: >-
+        Consume messages from the dead-letter queue for error handling
+        and reprocessing.
+      message:
+        $ref: '#/components/messages/DeadLetterMessage'
+    bindings:
+      ibmmq:
+        destinationType: queue
+        queue:
+          objectName: SYSTEM.DEAD.LETTER.QUEUE
+          isPartitioned: false
+          exclusive: false
+        bindingVersion: 0.1.0
+
+  requestReply/{requestQueue}:
+    description: >-
+      Request/reply messaging pattern where a requester sends a message to
+      a request queue and waits for a response on a dynamically created or
+      predefined reply queue.
+    parameters:
+      requestQueue:
+        description: Name of the request queue
+        schema:
+          type: string
+    publish:
+      operationId: sendRequest
+      summary: Send a request message
+      description: >-
+        Send a request message with a reply-to queue specified in the
+        message descriptor. The responder processes the request and sends
+        the reply to the indicated queue.
+      message:
+        $ref: '#/components/messages/RequestMessage'
+    subscribe:
+      operationId: receiveReply
+      summary: Receive a reply message
+      description: >-
+        Receive a reply message correlated to the original request via
+        the correlation ID.
+      message:
+        $ref: '#/components/messages/ReplyMessage'
+    bindings:
+      ibmmq:
+        destinationType: queue
+        queue:
+          objectName: '{requestQueue}'
+        bindingVersion: 0.1.0
+
+components:
+  securitySchemes:
+    mqAuth:
+      type: userPassword
+      description: IBM MQ user authentication via CONNAUTH
+
+  messages:
+    MQMessage:
+      name: MQMessage
+      title: IBM MQ Message
+      summary: A message transmitted through IBM MQ
+      description: >-
+        Standard IBM MQ message containing a message descriptor (MQMD) with
+        metadata and a message body with the application payload.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          ibm-mq-md-messageId:
+            type: string
+            description: Unique message identifier (hex-encoded 24-byte value)
+          ibm-mq-md-correlationId:
+            type: string
+            description: Correlation identifier for linking related messages
+          ibm-mq-md-persistence:
+            type: string
+            enum:
+              - persistent
+              - nonPersistent
+            description: Whether the message survives queue manager restart
+          ibm-mq-md-expiry:
+            type: integer
+            description: Message expiry time in tenths of a second (-1 for unlimited)
+          ibm-mq-md-priority:
+            type: integer
+            minimum: 0
+            maximum: 9
+            description: Message priority (0 lowest, 9 highest)
+          ibm-mq-md-replyTo:
+            type: string
+            description: Reply-to queue name
+          ibm-mq-md-replyToQmgr:
+            type: string
+            description: Reply-to queue manager name
+          ibm-mq-md-format:
+            type: string
+            description: Message format (e.g., MQSTR, MQHRF2)
+          ibm-mq-md-timestamp:
+            type: string
+            format: date-time
+            description: Message put timestamp
+      payload:
+        type: object
+        description: Application message payload
+
+    DeadLetterMessage:
+      name: DeadLetterMessage
+      title: Dead Letter Message
+      summary: An undeliverable message routed to the dead-letter queue
+      description: >-
+        Message that could not be delivered to its intended destination,
+        prefixed with a dead-letter header (MQDLH) containing the reason
+        code and original destination information.
+      headers:
+        type: object
+        properties:
+          ibm-mq-dlh-reason:
+            type: integer
+            description: Reason code explaining why the message was undeliverable
+          ibm-mq-dlh-destQueueName:
+            type: string
+            description: Original destination queue name
+          ibm-mq-dlh-destQueueManager:
+            type: string
+            description: Original destination queue manager name
+          ibm-mq-dlh-putDate:
+            type: string
+            description: Date the message was put to the dead-letter queue
+          ibm-mq-dlh-putTime:
+            type: string
+            description: Time the message was put to the dead-letter queue
+      payload:
+        type: object
+        description: Original message payload
+
+    RequestMessage:
+      name: RequestMessage
+      title: Request Message
+      summary: A request message in a request/reply pattern
+      headers:
+        type: object
+        required:
+          - ibm-mq-md-replyTo
+        properties:
+          ibm-mq-md-messageId:
+            type: string
+            description: Unique message identifier used for correlation
+          ibm-mq-md-replyTo:
+            type: string
+            description: Queue where the reply should be sent
+          ibm-mq-md-replyToQmgr:
+            type: string
+            description: Queue manager hosting the reply queue
+          ibm-mq-md-expiry:
+            type: integer
+            description: Message expiry in tenths of a second
+      payload:
+        type: object
+        description: Request payload
+
+    ReplyMessage:
+      name: ReplyMessage
+      title: Reply Message
+      summary: A reply message correlated to a request
+      headers:
+        type: object
+        properties:
+          ibm-mq-md-correlationId:
+            type: string
+            description: Correlation ID matching the original request message ID
+          ibm-mq-md-messageId:
+            type: string
+            description: Unique message identifier of the reply
+      payload:
+        type: object
+        description: Reply payload

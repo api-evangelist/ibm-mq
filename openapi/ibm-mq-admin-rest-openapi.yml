@@ -1,0 +1,1241 @@
+openapi: 3.1.0
+info:
+  title: IBM MQ Administration REST API
+  description: >-
+    REST API for administering and monitoring IBM MQ queue managers, queues,
+    topics, subscriptions, and channels. Provides programmatic access to
+    manage MQ objects and retrieve status information.
+  version: '2.0'
+  contact:
+    name: IBM Support
+    url: https://www.ibm.com/mysupport
+    email: support@ibm.com
+  license:
+    name: IBM License
+    url: https://www.ibm.com/terms
+externalDocs:
+  description: IBM MQ REST API Documentation
+  url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest
+servers:
+  - url: https://{host}:{port}/ibmmq/rest/v2
+    description: IBM MQ REST API v2
+    variables:
+      host:
+        default: localhost
+        description: Hostname of the MQ web server
+      port:
+        default: '9443'
+        description: HTTPS port of the MQ web server
+tags:
+  - name: Queue Managers
+    description: Manage and query queue manager objects and status
+  - name: Queues
+    description: Manage and query queue objects and status
+  - name: Topics
+    description: Manage and query topic objects
+  - name: Subscriptions
+    description: Manage and query subscription objects
+  - name: Channels
+    description: Manage and query channel objects and status
+  - name: Installations
+    description: Query MQ installation information
+security:
+  - basicAuth: []
+  - tokenAuth: []
+paths:
+  /admin/qmgr:
+    get:
+      operationId: listQueueManagers
+      summary: List queue managers
+      description: >-
+        Retrieve a list of queue managers accessible from the MQ web server,
+        with optional filtering by name and attribute selection.
+      tags:
+        - Queue Managers
+      parameters:
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+        - name: name
+          in: query
+          description: Filter queue managers by name (supports wildcard *)
+          schema:
+            type: string
+        - name: attributes
+          in: query
+          description: Comma-separated list of attributes to return
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Comma-separated list of status attributes to return
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Queue managers retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  qmgr:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QueueManager'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /admin/qmgr/{qmgrName}:
+    get:
+      operationId: getQueueManager
+      summary: Get queue manager details
+      description: >-
+        Retrieve detailed information about a specific queue manager,
+        including configuration attributes and runtime status.
+      tags:
+        - Queue Managers
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+        - name: attributes
+          in: query
+          description: Comma-separated list of attributes to return
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Comma-separated list of status attributes to return
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Queue manager details retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  qmgr:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QueueManager'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /admin/qmgr/{qmgrName}/queue:
+    get:
+      operationId: listQueues
+      summary: List queues
+      description: >-
+        Retrieve a list of queues defined on a queue manager, with optional
+        filtering by name, type, and attribute selection.
+      tags:
+        - Queues
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+        - name: name
+          in: query
+          description: Filter queues by name (supports wildcard *)
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: Filter by queue type
+          schema:
+            type: string
+            enum:
+              - local
+              - alias
+              - remote
+              - model
+              - cluster
+        - name: attributes
+          in: query
+          description: Comma-separated list of attributes to return
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Comma-separated list of status attributes to return
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Queues retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  queue:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Queue'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createQueue
+      summary: Create a queue
+      description: >-
+        Create a new queue on the specified queue manager with the given
+        attributes.
+      tags:
+        - Queues
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueueCreateRequest'
+      responses:
+        '201':
+          description: Queue created successfully
+          headers:
+            Location:
+              description: URL of the newly created queue
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Queue already exists
+  /admin/qmgr/{qmgrName}/queue/{queueName}:
+    get:
+      operationId: getQueue
+      summary: Get queue details
+      description: >-
+        Retrieve detailed information about a specific queue, including
+        configuration attributes and runtime status.
+      tags:
+        - Queues
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/queueName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+        - name: attributes
+          in: query
+          description: Comma-separated list of attributes to return
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Comma-separated list of status attributes to return
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Queue details retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  queue:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Queue'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateQueue
+      summary: Update a queue
+      description: >-
+        Modify attributes of an existing queue on the specified queue manager.
+      tags:
+        - Queues
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/queueName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueueUpdateRequest'
+      responses:
+        '200':
+          description: Queue updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteQueue
+      summary: Delete a queue
+      description: >-
+        Delete a queue from the specified queue manager. The queue must be
+        empty and have no open handles.
+      tags:
+        - Queues
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/queueName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      responses:
+        '204':
+          description: Queue deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /admin/qmgr/{qmgrName}/topic:
+    get:
+      operationId: listTopics
+      summary: List topics
+      description: >-
+        Retrieve a list of administrative topic objects defined on a queue
+        manager, with optional filtering.
+      tags:
+        - Topics
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+        - name: name
+          in: query
+          description: Filter topics by name (supports wildcard *)
+          schema:
+            type: string
+        - name: attributes
+          in: query
+          description: Comma-separated list of attributes to return
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Topics retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  topic:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Topic'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createTopic
+      summary: Create a topic
+      description: >-
+        Create a new administrative topic object on the specified queue
+        manager.
+      tags:
+        - Topics
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopicCreateRequest'
+      responses:
+        '201':
+          description: Topic created successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Topic already exists
+  /admin/qmgr/{qmgrName}/topic/{topicName}:
+    get:
+      operationId: getTopic
+      summary: Get topic details
+      description: >-
+        Retrieve detailed information about a specific administrative topic
+        object.
+      tags:
+        - Topics
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/topicName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+        - name: attributes
+          in: query
+          description: Comma-separated list of attributes to return
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Topic details retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  topic:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Topic'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateTopic
+      summary: Update a topic
+      description: >-
+        Modify attributes of an existing administrative topic object.
+      tags:
+        - Topics
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/topicName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopicUpdateRequest'
+      responses:
+        '200':
+          description: Topic updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteTopic
+      summary: Delete a topic
+      description: >-
+        Delete an administrative topic object from the queue manager.
+      tags:
+        - Topics
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/topicName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      responses:
+        '204':
+          description: Topic deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /admin/qmgr/{qmgrName}/subscription:
+    get:
+      operationId: listSubscriptions
+      summary: List subscriptions
+      description: >-
+        Retrieve a list of subscriptions defined on a queue manager, with
+        optional filtering by name.
+      tags:
+        - Subscriptions
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+        - name: name
+          in: query
+          description: Filter subscriptions by name (supports wildcard *)
+          schema:
+            type: string
+        - name: attributes
+          in: query
+          description: Comma-separated list of attributes to return
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Subscriptions retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscription:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Subscription'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createSubscription
+      summary: Create a subscription
+      description: >-
+        Create a new durable subscription on the specified queue manager.
+      tags:
+        - Subscriptions
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionCreateRequest'
+      responses:
+        '201':
+          description: Subscription created successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Subscription already exists
+  /admin/qmgr/{qmgrName}/subscription/{subscriptionId}:
+    get:
+      operationId: getSubscription
+      summary: Get subscription details
+      description: >-
+        Retrieve detailed information about a specific subscription.
+      tags:
+        - Subscriptions
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+        - name: attributes
+          in: query
+          description: Comma-separated list of attributes to return
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Subscription details retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscription:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Subscription'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteSubscription
+      summary: Delete a subscription
+      description: >-
+        Delete a subscription from the queue manager.
+      tags:
+        - Subscriptions
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/subscriptionId'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      responses:
+        '204':
+          description: Subscription deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /admin/qmgr/{qmgrName}/channel:
+    get:
+      operationId: listChannels
+      summary: List channels
+      description: >-
+        Retrieve a list of channel objects defined on a queue manager, with
+        optional filtering by name and type.
+      tags:
+        - Channels
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+        - name: name
+          in: query
+          description: Filter channels by name (supports wildcard *)
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: Filter by channel type
+          schema:
+            type: string
+            enum:
+              - sender
+              - receiver
+              - server
+              - requester
+              - serverConnection
+              - clusterSender
+              - clusterReceiver
+              - clientConnection
+              - amqp
+        - name: attributes
+          in: query
+          description: Comma-separated list of attributes to return
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Comma-separated list of status attributes to return
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Channels retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  channel:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Channel'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createChannel
+      summary: Create a channel
+      description: >-
+        Create a new channel on the specified queue manager.
+      tags:
+        - Channels
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChannelCreateRequest'
+      responses:
+        '201':
+          description: Channel created successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Channel already exists
+  /admin/qmgr/{qmgrName}/channel/{channelName}:
+    get:
+      operationId: getChannel
+      summary: Get channel details
+      description: >-
+        Retrieve detailed information about a specific channel, including
+        configuration attributes and runtime status.
+      tags:
+        - Channels
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/channelName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+        - name: attributes
+          in: query
+          description: Comma-separated list of attributes to return
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Comma-separated list of status attributes to return
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Channel details retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  channel:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Channel'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateChannel
+      summary: Update a channel
+      description: >-
+        Modify attributes of an existing channel on the queue manager.
+      tags:
+        - Channels
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/channelName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChannelUpdateRequest'
+      responses:
+        '200':
+          description: Channel updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteChannel
+      summary: Delete a channel
+      description: >-
+        Delete a channel from the queue manager.
+      tags:
+        - Channels
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/channelName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      responses:
+        '204':
+          description: Channel deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /admin/installation:
+    get:
+      operationId: listInstallations
+      summary: List MQ installations
+      description: >-
+        Retrieve a list of IBM MQ installations on the system.
+      tags:
+        - Installations
+      parameters:
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      responses:
+        '200':
+          description: Installations retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  installation:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Installation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication with MQ user credentials
+    tokenAuth:
+      type: apiKey
+      in: cookie
+      name: LtpaToken2
+      description: LTPA token-based authentication via login endpoint
+  parameters:
+    qmgrName:
+      name: qmgrName
+      in: path
+      required: true
+      description: Name of the queue manager
+      schema:
+        type: string
+    queueName:
+      name: queueName
+      in: path
+      required: true
+      description: Name of the queue
+      schema:
+        type: string
+    topicName:
+      name: topicName
+      in: path
+      required: true
+      description: Name of the administrative topic object
+      schema:
+        type: string
+    channelName:
+      name: channelName
+      in: path
+      required: true
+      description: Name of the channel
+      schema:
+        type: string
+    subscriptionId:
+      name: subscriptionId
+      in: path
+      required: true
+      description: Subscription identifier
+      schema:
+        type: string
+    ibmMqRestCsrfToken:
+      name: ibm-mq-rest-csrf-token
+      in: header
+      required: false
+      description: CSRF token required for state-changing operations
+      schema:
+        type: string
+  responses:
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication required or credentials invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Requested resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    QueueManager:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the queue manager
+        state:
+          type: string
+          enum:
+            - running
+            - ended
+          description: Current state of the queue manager
+        extended:
+          type: object
+          description: Extended queue manager attributes
+          properties:
+            commandLevel:
+              type: integer
+              description: Command level of the queue manager
+            platform:
+              type: string
+              description: Platform the queue manager runs on
+            maximumMessageLength:
+              type: integer
+              description: Maximum message length in bytes
+            description:
+              type: string
+              description: Description of the queue manager
+            deadLetterQueue:
+              type: string
+              description: Name of the dead-letter queue
+            defaultTransmissionQueue:
+              type: string
+              description: Name of the default transmission queue
+        status:
+          type: object
+          description: Runtime status information
+          properties:
+            started:
+              type: string
+              format: date-time
+              description: Timestamp when the queue manager was started
+            connectionCount:
+              type: integer
+              description: Number of current connections
+            channelInitiatorState:
+              type: string
+              description: State of the channel initiator
+    Queue:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the queue
+        type:
+          type: string
+          enum:
+            - local
+            - alias
+            - remote
+            - model
+            - cluster
+          description: Type of the queue
+        general:
+          type: object
+          description: General queue attributes
+          properties:
+            description:
+              type: string
+              description: Description of the queue
+            inhibitPut:
+              type: boolean
+              description: Whether puts are inhibited
+            inhibitGet:
+              type: boolean
+              description: Whether gets are inhibited
+            isTransmissionQueue:
+              type: boolean
+              description: Whether this is a transmission queue
+        extended:
+          type: object
+          description: Extended queue attributes
+          properties:
+            maximumDepth:
+              type: integer
+              description: Maximum number of messages on the queue
+            maximumMessageLength:
+              type: integer
+              description: Maximum message length in bytes
+            backoutThreshold:
+              type: integer
+              description: Backout threshold
+            backoutRequeueQueue:
+              type: string
+              description: Backout requeue queue name
+        storage:
+          type: object
+          description: Storage-related queue attributes
+          properties:
+            defaultPersistence:
+              type: string
+              enum:
+                - persistent
+                - notPersistent
+              description: Default message persistence
+        status:
+          type: object
+          description: Runtime status information
+          properties:
+            currentDepth:
+              type: integer
+              description: Current number of messages on the queue
+            openInputCount:
+              type: integer
+              description: Number of open input handles
+            openOutputCount:
+              type: integer
+              description: Number of open output handles
+            lastPut:
+              type: string
+              format: date-time
+              description: Timestamp of the last put
+            lastGet:
+              type: string
+              format: date-time
+              description: Timestamp of the last get
+    QueueCreateRequest:
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          type: string
+          description: Name of the new queue
+        type:
+          type: string
+          enum:
+            - local
+            - alias
+            - remote
+            - model
+          description: Type of queue to create
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+              description: Description of the queue
+        extended:
+          type: object
+          properties:
+            maximumDepth:
+              type: integer
+              description: Maximum number of messages on the queue
+            maximumMessageLength:
+              type: integer
+              description: Maximum message length in bytes
+    QueueUpdateRequest:
+      type: object
+      properties:
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+            inhibitPut:
+              type: boolean
+            inhibitGet:
+              type: boolean
+        extended:
+          type: object
+          properties:
+            maximumDepth:
+              type: integer
+            maximumMessageLength:
+              type: integer
+    Topic:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the administrative topic object
+        topicString:
+          type: string
+          description: The topic string associated with this topic object
+        type:
+          type: string
+          description: Topic type
+        general:
+          type: object
+          description: General topic attributes
+          properties:
+            description:
+              type: string
+              description: Description of the topic
+            durableSubscriptions:
+              type: string
+              enum:
+                - allowed
+                - notAllowed
+              description: Whether durable subscriptions are allowed
+            defaultPutResponse:
+              type: string
+              description: Default put response type
+    TopicCreateRequest:
+      type: object
+      required:
+        - name
+        - topicString
+      properties:
+        name:
+          type: string
+          description: Name of the topic object
+        topicString:
+          type: string
+          description: The topic string
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+    TopicUpdateRequest:
+      type: object
+      properties:
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+            durableSubscriptions:
+              type: string
+              enum:
+                - allowed
+                - notAllowed
+    Subscription:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the subscription
+        name:
+          type: string
+          description: Name of the subscription
+        topicString:
+          type: string
+          description: Topic string that the subscription listens on
+        type:
+          type: string
+          enum:
+            - admin
+            - api
+          description: How the subscription was created
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+              description: Description of the subscription
+            destination:
+              type: string
+              description: Destination queue for messages
+            destinationQueueManager:
+              type: string
+              description: Queue manager hosting the destination
+            durability:
+              type: string
+              enum:
+                - durable
+                - nonDurable
+              description: Whether the subscription persists across restarts
+    SubscriptionCreateRequest:
+      type: object
+      required:
+        - name
+        - topicString
+        - general
+      properties:
+        name:
+          type: string
+          description: Name of the subscription
+        topicString:
+          type: string
+          description: Topic string to subscribe to
+        general:
+          type: object
+          required:
+            - destination
+          properties:
+            description:
+              type: string
+            destination:
+              type: string
+              description: Destination queue for messages
+    Channel:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the channel
+        type:
+          type: string
+          enum:
+            - sender
+            - receiver
+            - server
+            - requester
+            - serverConnection
+            - clusterSender
+            - clusterReceiver
+            - clientConnection
+            - amqp
+          description: Type of the channel
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+              description: Description of the channel
+            connectionName:
+              type: string
+              description: Connection name (host/port)
+            transmissionQueue:
+              type: string
+              description: Transmission queue name
+        status:
+          type: object
+          properties:
+            state:
+              type: string
+              enum:
+                - running
+                - stopped
+                - retrying
+                - binding
+                - starting
+                - stopping
+                - initializing
+              description: Current channel state
+            messagesTransferred:
+              type: integer
+              description: Number of messages transferred
+            bytesTransferred:
+              type: integer
+              description: Number of bytes transferred
+            lastMessageTime:
+              type: string
+              format: date-time
+              description: Timestamp of the last message
+    ChannelCreateRequest:
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          type: string
+          description: Name of the channel
+        type:
+          type: string
+          enum:
+            - sender
+            - receiver
+            - server
+            - requester
+            - serverConnection
+            - clusterSender
+            - clusterReceiver
+            - clientConnection
+            - amqp
+          description: Type of channel to create
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+            connectionName:
+              type: string
+            transmissionQueue:
+              type: string
+    ChannelUpdateRequest:
+      type: object
+      properties:
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+            connectionName:
+              type: string
+    Installation:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the installation
+        version:
+          type: string
+          description: Version of IBM MQ installed
+        path:
+          type: string
+          description: Installation path
+        platform:
+          type: string
+          description: Platform of the installation
+    Error:
+      type: object
+      properties:
+        error:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: Error type
+              msgId:
+                type: string
+                description: Message identifier
+              explanation:
+                type: string
+                description: Explanation of the error
+              action:
+                type: string
+                description: Suggested action

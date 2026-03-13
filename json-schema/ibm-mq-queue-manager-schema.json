@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://www.ibm.com/schemas/ibm-mq/queue-manager.json",
+  "title": "IBM MQ Queue Manager",
+  "description": "An IBM MQ queue manager is the primary component that hosts queues, topics, channels, and other MQ objects. It manages message storage, delivery, and routing for enterprise messaging.",
+  "type": "object",
+  "required": ["name"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the queue manager",
+      "minLength": 1,
+      "maxLength": 48,
+      "pattern": "^[A-Za-z0-9._/%]+$"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the queue manager",
+      "maxLength": 64
+    },
+    "state": {
+      "type": "string",
+      "enum": ["running", "ended"],
+      "description": "Current operational state of the queue manager"
+    },
+    "platform": {
+      "type": "string",
+      "enum": ["unix", "windows", "appliance", "zos"],
+      "description": "Platform the queue manager runs on"
+    },
+    "commandLevel": {
+      "type": "integer",
+      "description": "Command level indicating the MQ version capabilities"
+    },
+    "maximumMessageLength": {
+      "type": "integer",
+      "minimum": 32,
+      "maximum": 104857600,
+      "description": "Maximum message length in bytes supported by the queue manager"
+    },
+    "deadLetterQueue": {
+      "type": "string",
+      "description": "Name of the dead-letter queue for undeliverable messages",
+      "maxLength": 48
+    },
+    "defaultTransmissionQueue": {
+      "type": "string",
+      "description": "Name of the default transmission queue for remote messaging",
+      "maxLength": 48
+    },
+    "ccsid": {
+      "type": "integer",
+      "description": "Coded character set identifier for the queue manager"
+    },
+    "triggerInterval": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Trigger interval in milliseconds"
+    },
+    "connectionCount": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of current connections to the queue manager"
+    },
+    "channelInitiatorState": {
+      "type": "string",
+      "enum": ["running", "stopped"],
+      "description": "State of the channel initiator"
+    },
+    "started": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the queue manager was started"
+    },
+    "listener": {
+      "$ref": "#/$defs/Listener"
+    }
+  },
+  "$defs": {
+    "Listener": {
+      "type": "object",
+      "description": "Queue manager listener configuration",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Listener name"
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535,
+          "description": "TCP/IP port number"
+        },
+        "transportType": {
+          "type": "string",
+          "enum": ["tcp", "lu62", "netbios", "spx"],
+          "description": "Transport type for the listener"
+        },
+        "state": {
+          "type": "string",
+          "enum": ["running", "stopped"],
+          "description": "Current state of the listener"
+        }
+      }
+    }
+  }
+}

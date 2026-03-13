@@ -1,0 +1,419 @@
+openapi: 3.1.0
+info:
+  title: IBM MQ Messaging REST API
+  description: >-
+    REST API for sending and receiving messages via HTTP to IBM MQ queues and
+    topics. Enables lightweight message production and consumption without
+    requiring an MQ client library.
+  version: '2.0'
+  contact:
+    name: IBM Support
+    url: https://www.ibm.com/mysupport
+    email: support@ibm.com
+  license:
+    name: IBM License
+    url: https://www.ibm.com/terms
+externalDocs:
+  description: IBM MQ Messaging REST API Documentation
+  url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
+servers:
+  - url: https://{host}:{port}/ibmmq/rest/v2
+    description: IBM MQ REST API v2
+    variables:
+      host:
+        default: localhost
+        description: Hostname of the MQ web server
+      port:
+        default: '9443'
+        description: HTTPS port of the MQ web server
+tags:
+  - name: Queue Messaging
+    description: Send and receive messages on queues
+  - name: Topic Messaging
+    description: Publish messages to topics
+  - name: Login
+    description: Authentication token management
+security:
+  - basicAuth: []
+  - tokenAuth: []
+paths:
+  /messaging/qmgr/{qmgrName}/queue/{queueName}/message:
+    post:
+      operationId: sendMessageToQueue
+      summary: Send a message to a queue
+      description: >-
+        Put a message onto the specified queue. The message body is taken from
+        the HTTP request body. Message properties can be set via HTTP headers.
+      tags:
+        - Queue Messaging
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/queueName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+        - name: ibm-mq-md-correlationId
+          in: header
+          description: Correlation ID for the message (hex-encoded)
+          schema:
+            type: string
+        - name: ibm-mq-md-expiry
+          in: header
+          description: Message expiry time in tenths of a second
+          schema:
+            type: integer
+        - name: ibm-mq-md-persistence
+          in: header
+          description: Message persistence
+          schema:
+            type: string
+            enum:
+              - persistent
+              - nonPersistent
+        - name: ibm-mq-md-replyTo
+          in: header
+          description: Reply-to queue name in format queueName[@qmgrName]
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              description: Text message body
+          application/json:
+            schema:
+              type: object
+              description: JSON message body
+          application/xml:
+            schema:
+              type: string
+              description: XML message body
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+              description: Binary message body
+      responses:
+        '201':
+          description: Message sent successfully
+          headers:
+            ibm-mq-md-messageId:
+              description: Message ID of the sent message (hex-encoded)
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Queue manager or queue not found
+        '503':
+          description: Queue manager not available
+    get:
+      operationId: receiveMessageFromQueue
+      summary: Receive a message from a queue
+      description: >-
+        Destructively get a message from the specified queue. The message is
+        removed from the queue and returned in the HTTP response body.
+      tags:
+        - Queue Messaging
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/queueName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+        - name: correlationId
+          in: query
+          description: Filter by correlation ID (hex-encoded)
+          schema:
+            type: string
+        - name: messageId
+          in: query
+          description: Filter by message ID (hex-encoded)
+          schema:
+            type: string
+        - name: wait
+          in: query
+          description: Maximum time in milliseconds to wait for a message
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Message received successfully
+          headers:
+            ibm-mq-md-messageId:
+              description: Message ID (hex-encoded)
+              schema:
+                type: string
+            ibm-mq-md-correlationId:
+              description: Correlation ID (hex-encoded)
+              schema:
+                type: string
+            ibm-mq-md-expiry:
+              description: Remaining message expiry
+              schema:
+                type: string
+            ibm-mq-md-persistence:
+              description: Message persistence
+              schema:
+                type: string
+            ibm-mq-md-replyTo:
+              description: Reply-to destination
+              schema:
+                type: string
+            ibm-mq-md-timestamp:
+              description: Message put timestamp
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: object
+            application/xml:
+              schema:
+                type: string
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '204':
+          description: No message available on the queue
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Queue manager or queue not found
+    delete:
+      operationId: browseMessageFromQueue
+      summary: Browse a message on a queue
+      description: >-
+        Non-destructively browse a message from the queue. The message remains
+        on the queue after being returned.
+      tags:
+        - Queue Messaging
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - $ref: '#/components/parameters/queueName'
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+        - name: correlationId
+          in: query
+          description: Filter by correlation ID (hex-encoded)
+          schema:
+            type: string
+        - name: messageId
+          in: query
+          description: Filter by message ID (hex-encoded)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Message browsed successfully
+          headers:
+            ibm-mq-md-messageId:
+              description: Message ID (hex-encoded)
+              schema:
+                type: string
+            ibm-mq-md-correlationId:
+              description: Correlation ID (hex-encoded)
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: object
+        '204':
+          description: No message available on the queue
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Queue manager or queue not found
+  /messaging/qmgr/{qmgrName}/topic/{topicString}/message:
+    post:
+      operationId: publishMessageToTopic
+      summary: Publish a message to a topic
+      description: >-
+        Publish a message to the specified topic string. All active
+        subscribers to the topic will receive the message.
+      tags:
+        - Topic Messaging
+      parameters:
+        - $ref: '#/components/parameters/qmgrName'
+        - name: topicString
+          in: path
+          required: true
+          description: The topic string to publish to (URL-encoded)
+          schema:
+            type: string
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+        - name: ibm-mq-md-correlationId
+          in: header
+          description: Correlation ID for the message
+          schema:
+            type: string
+        - name: ibm-mq-md-expiry
+          in: header
+          description: Message expiry time in tenths of a second
+          schema:
+            type: integer
+        - name: ibm-mq-md-persistence
+          in: header
+          description: Message persistence
+          schema:
+            type: string
+            enum:
+              - persistent
+              - nonPersistent
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+          application/json:
+            schema:
+              type: object
+          application/xml:
+            schema:
+              type: string
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '201':
+          description: Message published successfully
+          headers:
+            ibm-mq-md-messageId:
+              description: Message ID of the published message
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Queue manager not found
+  /login:
+    post:
+      operationId: login
+      summary: Authenticate and obtain LTPA token
+      description: >-
+        Authenticate with the MQ web server and obtain an LTPA token cookie
+        for subsequent requests.
+      tags:
+        - Login
+      parameters:
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  description: MQ user name
+                password:
+                  type: string
+                  description: MQ user password
+      responses:
+        '200':
+          description: Authentication successful
+          headers:
+            Set-Cookie:
+              description: LTPA token cookie
+              schema:
+                type: string
+        '401':
+          description: Authentication failed
+      security: []
+    delete:
+      operationId: logout
+      summary: Log out and invalidate token
+      description: >-
+        Invalidate the current LTPA token and end the session.
+      tags:
+        - Login
+      parameters:
+        - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      responses:
+        '204':
+          description: Logged out successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication with MQ user credentials
+    tokenAuth:
+      type: apiKey
+      in: cookie
+      name: LtpaToken2
+      description: LTPA token-based authentication via login endpoint
+  parameters:
+    qmgrName:
+      name: qmgrName
+      in: path
+      required: true
+      description: Name of the queue manager
+      schema:
+        type: string
+    queueName:
+      name: queueName
+      in: path
+      required: true
+      description: Name of the queue
+      schema:
+        type: string
+    ibmMqRestCsrfToken:
+      name: ibm-mq-rest-csrf-token
+      in: header
+      required: false
+      description: CSRF token required for state-changing operations
+      schema:
+        type: string
+  responses:
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication required or credentials invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: Error type
+              msgId:
+                type: string
+                description: Message identifier
+              explanation:
+                type: string
+                description: Explanation of the error
+              action:
+                type: string
+                description: Suggested action

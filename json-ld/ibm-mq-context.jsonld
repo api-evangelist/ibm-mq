@@ -1,0 +1,141 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "ibmmq": "https://www.ibm.com/schemas/ibm-mq/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+
+    "QueueManager": {
+      "@id": "ibmmq:QueueManager",
+      "@context": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "state": "ibmmq:state",
+        "platform": "ibmmq:platform",
+        "commandLevel": {
+          "@id": "ibmmq:commandLevel",
+          "@type": "xsd:integer"
+        },
+        "maximumMessageLength": {
+          "@id": "ibmmq:maximumMessageLength",
+          "@type": "xsd:integer"
+        },
+        "deadLetterQueue": "ibmmq:deadLetterQueue",
+        "defaultTransmissionQueue": "ibmmq:defaultTransmissionQueue",
+        "connectionCount": {
+          "@id": "ibmmq:connectionCount",
+          "@type": "xsd:integer"
+        },
+        "started": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Queue": {
+      "@id": "ibmmq:Queue",
+      "@context": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "type": "ibmmq:queueType",
+        "maximumDepth": {
+          "@id": "ibmmq:maximumDepth",
+          "@type": "xsd:integer"
+        },
+        "maximumMessageLength": {
+          "@id": "ibmmq:maximumMessageLength",
+          "@type": "xsd:integer"
+        },
+        "currentDepth": {
+          "@id": "ibmmq:currentDepth",
+          "@type": "xsd:integer"
+        },
+        "inhibitPut": {
+          "@id": "ibmmq:inhibitPut",
+          "@type": "xsd:boolean"
+        },
+        "inhibitGet": {
+          "@id": "ibmmq:inhibitGet",
+          "@type": "xsd:boolean"
+        },
+        "defaultPersistence": "ibmmq:defaultPersistence"
+      }
+    },
+
+    "Topic": {
+      "@id": "ibmmq:Topic",
+      "@context": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "topicString": "ibmmq:topicString",
+        "durableSubscriptions": "ibmmq:durableSubscriptions"
+      }
+    },
+
+    "Channel": {
+      "@id": "ibmmq:Channel",
+      "@context": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "type": "ibmmq:channelType",
+        "connectionName": "ibmmq:connectionName",
+        "transmissionQueue": "ibmmq:transmissionQueue",
+        "state": "ibmmq:channelState",
+        "messagesTransferred": {
+          "@id": "ibmmq:messagesTransferred",
+          "@type": "xsd:integer"
+        },
+        "bytesTransferred": {
+          "@id": "ibmmq:bytesTransferred",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+
+    "Subscription": {
+      "@id": "ibmmq:Subscription",
+      "@context": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "topicString": "ibmmq:topicString",
+        "destination": "ibmmq:destination",
+        "durability": "ibmmq:durability"
+      }
+    },
+
+    "Message": {
+      "@id": "ibmmq:Message",
+      "@context": {
+        "messageId": "ibmmq:messageId",
+        "correlationId": "ibmmq:correlationId",
+        "persistence": "ibmmq:persistence",
+        "priority": {
+          "@id": "ibmmq:priority",
+          "@type": "xsd:integer"
+        },
+        "expiry": {
+          "@id": "ibmmq:expiry",
+          "@type": "xsd:integer"
+        },
+        "replyTo": "ibmmq:replyTo",
+        "format": "ibmmq:format",
+        "timestamp": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Installation": {
+      "@id": "ibmmq:Installation",
+      "@context": {
+        "name": "schema:name",
+        "version": "schema:softwareVersion",
+        "path": "ibmmq:installationPath",
+        "platform": "ibmmq:platform"
+      }
+    }
+  }
+}
