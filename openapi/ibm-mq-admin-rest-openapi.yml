@@ -27,18 +27,18 @@ servers:
         default: '9443'
         description: HTTPS port of the MQ web server
 tags:
-  - name: Queue Managers
-    description: Manage and query queue manager objects and status
-  - name: Queues
-    description: Manage and query queue objects and status
-  - name: Topics
-    description: Manage and query topic objects
-  - name: Subscriptions
-    description: Manage and query subscription objects
   - name: Channels
     description: Manage and query channel objects and status
   - name: Installations
     description: Query MQ installation information
+  - name: Queue Managers
+    description: Manage and query queue manager objects and status
+  - name: Queues
+    description: Manage and query queue objects and status
+  - name: Subscriptions
+    description: Manage and query subscription objects
+  - name: Topics
+    description: Manage and query topic objects
 security:
   - basicAuth: []
   - tokenAuth: []

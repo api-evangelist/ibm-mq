@@ -27,12 +27,12 @@ servers:
         default: '9443'
         description: HTTPS port of the MQ web server
 tags:
+  - name: Login
+    description: Authentication token management
   - name: Queue Messaging
     description: Send and receive messages on queues
   - name: Topic Messaging
     description: Publish messages to topics
-  - name: Login
-    description: Authentication token management
 security:
   - basicAuth: []
   - tokenAuth: []

@@ -1,15 +1,14 @@
 name: IBM MQ
 description: >-
   APIs for IBM MQ messaging middleware for enterprise integration.
-image: 
-  https://www.ibm.com/brand/experience-guides/developer/8f4e3cc842d31b9a55e57cb2b0e49605/02_8-bar-positive.svg
+image: https://www.ibm.com/brand/experience-guides/developer/8f4e3cc842d31b9a55e57cb2b0e49605/02_8-bar-positive.svg
 tags:
-  - messaging
-  - middleware
-  - enterprise
-  - queue
-  - integration
-  - async
+  - Async
+  - Enterprise
+  - Integration
+  - Messaging
+  - Middleware
+  - Queue
 created: '2024-01-20'
 modified: '2026-03-16'
 url: https://www.ibm.com/products/mq
@@ -19,20 +18,18 @@ apis:
     description: >-
       REST API for managing and monitoring IBM MQ queue managers, queues, topics,
       and channels.
-    image: 
-      https://www.ibm.com/brand/experience-guides/developer/8f4e3cc842d31b9a55e57cb2b0e49605/02_8-bar-positive.svg
+    image: https://www.ibm.com/brand/experience-guides/developer/8f4e3cc842d31b9a55e57cb2b0e49605/02_8-bar-positive.svg
     humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest-overview
     baseURL: https://{host}:{port}/ibmmq/rest/v2
     tags:
-      - rest
-      - messaging
-      - admin
+      - Admin
+      - Messaging
+      - Rest
     properties:
       - type: documentation
         url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest
       - type: openapi
-        url: 
-          https://www.ibm.com/docs/en/SSFKSJ_9.3.0/com.ibm.mq.dev.doc/rest_api_swagger.json
+        url: https://www.ibm.com/docs/en/SSFKSJ_9.3.0/com.ibm.mq.dev.doc/rest_api_swagger.json
       - type: OpenAPI
         url: openapi/ibm-mq-admin-rest-openapi.yml
     contact:
@@ -42,21 +39,19 @@ apis:
   - name: IBM MQ Messaging REST API
     description: >-
       REST API for sending and receiving messages via HTTP.
-    image: 
-      https://www.ibm.com/brand/experience-guides/developer/8f4e3cc842d31b9a55e57cb2b0e49605/02_8-bar-positive.svg
+    image: https://www.ibm.com/brand/experience-guides/developer/8f4e3cc842d31b9a55e57cb2b0e49605/02_8-bar-positive.svg
     humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
     baseURL: https://{host}:{port}/ibmmq/rest/v2/messaging
     tags:
-      - rest
-      - messaging
-      - producer
-      - consumer
+      - Consumer
+      - Messaging
+      - Producer
+      - Rest
     properties:
       - type: documentation
         url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
       - type: openapi
-        url: 
-          https://www.ibm.com/docs/en/SSFKSJ_9.3.0/com.ibm.mq.dev.doc/messaging_rest_api_swagger.json
+        url: https://www.ibm.com/docs/en/SSFKSJ_9.3.0/com.ibm.mq.dev.doc/messaging_rest_api_swagger.json
       - type: OpenAPI
         url: openapi/ibm-mq-messaging-rest-openapi.yml
     contact:
@@ -66,17 +61,15 @@ apis:
   - name: IBM MQ JMS API
     description: >-
       Java Message Service API for IBM MQ.
-    image: 
-      https://www.ibm.com/brand/experience-guides/developer/8f4e3cc842d31b9a55e57cb2b0e49605/02_8-bar-positive.svg
+    image: https://www.ibm.com/brand/experience-guides/developer/8f4e3cc842d31b9a55e57cb2b0e49605/02_8-bar-positive.svg
     humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-jms
     tags:
-      - jms
-      - java
-      - messaging
+      - Java
+      - Jms
+      - Messaging
     properties:
       - type: documentation
-        url: 
-          https://www.ibm.com/docs/en/ibm-mq/latest?topic=mq-developing-jms-applications
+        url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=mq-developing-jms-applications
       - type: sdk
         url: https://mvnrepository.com/artifact/com.ibm.mq/com.ibm.mq.allclient
       - type: AsyncAPI
@@ -88,13 +81,12 @@ apis:
   - name: IBM MQ Native API
     description: >-
       Native procedural API for IBM MQ (MQI).
-    image: 
-      https://www.ibm.com/brand/experience-guides/developer/8f4e3cc842d31b9a55e57cb2b0e49605/02_8-bar-positive.svg
+    image: https://www.ibm.com/brand/experience-guides/developer/8f4e3cc842d31b9a55e57cb2b0e49605/02_8-bar-positive.svg
     humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=reference-mqi
     tags:
-      - mqi
-      - native
-      - procedural
+      - Mqi
+      - Native
+      - Procedural
     properties:
       - type: documentation
         url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=programming-mqi
@@ -114,8 +106,7 @@ common:
   - type: support
     url: https://www.ibm.com/mysupport
   - type: blog
-    url: 
-      https://community.ibm.com/community/user/integration/communities/community-home?CommunityKey=183ec850-4947-49c8-9a2e-8e7c7fc46c64
+    url: https://community.ibm.com/community/user/integration/communities/community-home?CommunityKey=183ec850-4947-49c8-9a2e-8e7c7fc46c64
   - type: JSON-LD
     url: json-ld/ibm-mq-context.jsonld
   - type: JSONSchema
