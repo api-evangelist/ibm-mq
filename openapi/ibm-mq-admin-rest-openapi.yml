@@ -46,7 +46,7 @@ paths:
   /admin/qmgr:
     get:
       operationId: listQueueManagers
-      summary: List queue managers
+      summary: IBM MQ List queue managers
       description: >-
         Retrieve a list of queue managers accessible from the MQ web server,
         with optional filtering by name and attribute selection.
@@ -88,7 +88,7 @@ paths:
   /admin/qmgr/{qmgrName}:
     get:
       operationId: getQueueManager
-      summary: Get queue manager details
+      summary: IBM MQ Get queue manager details
       description: >-
         Retrieve detailed information about a specific queue manager,
         including configuration attributes and runtime status.
@@ -126,7 +126,7 @@ paths:
   /admin/qmgr/{qmgrName}/queue:
     get:
       operationId: listQueues
-      summary: List queues
+      summary: IBM MQ List queues
       description: >-
         Retrieve a list of queues defined on a queue manager, with optional
         filtering by name, type, and attribute selection.
@@ -181,7 +181,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     post:
       operationId: createQueue
-      summary: Create a queue
+      summary: IBM MQ Create a queue
       description: >-
         Create a new queue on the specified queue manager with the given
         attributes.
@@ -213,7 +213,7 @@ paths:
   /admin/qmgr/{qmgrName}/queue/{queueName}:
     get:
       operationId: getQueue
-      summary: Get queue details
+      summary: IBM MQ Get queue details
       description: >-
         Retrieve detailed information about a specific queue, including
         configuration attributes and runtime status.
@@ -251,7 +251,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     patch:
       operationId: updateQueue
-      summary: Update a queue
+      summary: IBM MQ Update a queue
       description: >-
         Modify attributes of an existing queue on the specified queue manager.
       tags:
@@ -277,7 +277,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteQueue
-      summary: Delete a queue
+      summary: IBM MQ Delete a queue
       description: >-
         Delete a queue from the specified queue manager. The queue must be
         empty and have no open handles.
@@ -297,7 +297,7 @@ paths:
   /admin/qmgr/{qmgrName}/topic:
     get:
       operationId: listTopics
-      summary: List topics
+      summary: IBM MQ List topics
       description: >-
         Retrieve a list of administrative topic objects defined on a queue
         manager, with optional filtering.
@@ -334,7 +334,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     post:
       operationId: createTopic
-      summary: Create a topic
+      summary: IBM MQ Create a topic
       description: >-
         Create a new administrative topic object on the specified queue
         manager.
@@ -361,7 +361,7 @@ paths:
   /admin/qmgr/{qmgrName}/topic/{topicName}:
     get:
       operationId: getTopic
-      summary: Get topic details
+      summary: IBM MQ Get topic details
       description: >-
         Retrieve detailed information about a specific administrative topic
         object.
@@ -394,7 +394,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     patch:
       operationId: updateTopic
-      summary: Update a topic
+      summary: IBM MQ Update a topic
       description: >-
         Modify attributes of an existing administrative topic object.
       tags:
@@ -420,7 +420,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteTopic
-      summary: Delete a topic
+      summary: IBM MQ Delete a topic
       description: >-
         Delete an administrative topic object from the queue manager.
       tags:
@@ -439,7 +439,7 @@ paths:
   /admin/qmgr/{qmgrName}/subscription:
     get:
       operationId: listSubscriptions
-      summary: List subscriptions
+      summary: IBM MQ List subscriptions
       description: >-
         Retrieve a list of subscriptions defined on a queue manager, with
         optional filtering by name.
@@ -476,7 +476,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     post:
       operationId: createSubscription
-      summary: Create a subscription
+      summary: IBM MQ Create a subscription
       description: >-
         Create a new durable subscription on the specified queue manager.
       tags:
@@ -502,7 +502,7 @@ paths:
   /admin/qmgr/{qmgrName}/subscription/{subscriptionId}:
     get:
       operationId: getSubscription
-      summary: Get subscription details
+      summary: IBM MQ Get subscription details
       description: >-
         Retrieve detailed information about a specific subscription.
       tags:
@@ -534,7 +534,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteSubscription
-      summary: Delete a subscription
+      summary: IBM MQ Delete a subscription
       description: >-
         Delete a subscription from the queue manager.
       tags:
@@ -553,7 +553,7 @@ paths:
   /admin/qmgr/{qmgrName}/channel:
     get:
       operationId: listChannels
-      summary: List channels
+      summary: IBM MQ List channels
       description: >-
         Retrieve a list of channel objects defined on a queue manager, with
         optional filtering by name and type.
@@ -610,7 +610,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     post:
       operationId: createChannel
-      summary: Create a channel
+      summary: IBM MQ Create a channel
       description: >-
         Create a new channel on the specified queue manager.
       tags:
@@ -636,7 +636,7 @@ paths:
   /admin/qmgr/{qmgrName}/channel/{channelName}:
     get:
       operationId: getChannel
-      summary: Get channel details
+      summary: IBM MQ Get channel details
       description: >-
         Retrieve detailed information about a specific channel, including
         configuration attributes and runtime status.
@@ -674,7 +674,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     patch:
       operationId: updateChannel
-      summary: Update a channel
+      summary: IBM MQ Update a channel
       description: >-
         Modify attributes of an existing channel on the queue manager.
       tags:
@@ -700,7 +700,7 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteChannel
-      summary: Delete a channel
+      summary: IBM MQ Delete a channel
       description: >-
         Delete a channel from the queue manager.
       tags:
@@ -719,7 +719,7 @@ paths:
   /admin/installation:
     get:
       operationId: listInstallations
-      summary: List MQ installations
+      summary: IBM MQ List MQ installations
       description: >-
         Retrieve a list of IBM MQ installations on the system.
       tags:

@@ -40,7 +40,7 @@ paths:
   /messaging/qmgr/{qmgrName}/queue/{queueName}/message:
     post:
       operationId: sendMessageToQueue
-      summary: Send a message to a queue
+      summary: IBM MQ Send a message to a queue
       description: >-
         Put a message onto the specified queue. The message body is taken from
         the HTTP request body. Message properties can be set via HTTP headers.
@@ -111,7 +111,7 @@ paths:
           description: Queue manager not available
     get:
       operationId: receiveMessageFromQueue
-      summary: Receive a message from a queue
+      summary: IBM MQ Receive a message from a queue
       description: >-
         Destructively get a message from the specified queue. The message is
         removed from the queue and returned in the HTTP response body.
@@ -187,7 +187,7 @@ paths:
           description: Queue manager or queue not found
     delete:
       operationId: browseMessageFromQueue
-      summary: Browse a message on a queue
+      summary: IBM MQ Browse a message on a queue
       description: >-
         Non-destructively browse a message from the queue. The message remains
         on the queue after being returned.
@@ -235,7 +235,7 @@ paths:
   /messaging/qmgr/{qmgrName}/topic/{topicString}/message:
     post:
       operationId: publishMessageToTopic
-      summary: Publish a message to a topic
+      summary: IBM MQ Publish a message to a topic
       description: >-
         Publish a message to the specified topic string. All active
         subscribers to the topic will receive the message.
@@ -301,7 +301,7 @@ paths:
   /login:
     post:
       operationId: login
-      summary: Authenticate and obtain LTPA token
+      summary: IBM MQ Authenticate and obtain LTPA token
       description: >-
         Authenticate with the MQ web server and obtain an LTPA token cookie
         for subsequent requests.
@@ -338,7 +338,7 @@ paths:
       security: []
     delete:
       operationId: logout
-      summary: Log out and invalidate token
+      summary: IBM MQ Log out and invalidate token
       description: >-
         Invalidate the current LTPA token and end the session.
       tags:
