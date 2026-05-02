@@ -1,0 +1,43 @@
+aid: ibm-mq:ibm-mq-rules
+name: IBM MQ Rules
+description: >-
+  Governance and operational rules for the IBM MQ API artifacts maintained in
+  this repository.
+tags:
+  - Governance
+  - Rules
+  - IBM
+  - MQ
+  - Messaging
+rules:
+  - name: Specification Format
+    description: >-
+      REST surfaces must be described with OpenAPI 3.0 or later under openapi/;
+      messaging surfaces must use AsyncAPI under asyncapi/; reusable payload
+      contracts live under json-schema/.
+  - name: Authentication
+    description: >-
+      The administrative and messaging REST APIs require basic auth or
+      mTLS-protected bearer tokens managed by the queue manager; native and
+      JMS clients use their own connection-level credentials.
+  - name: Transport
+    description: >-
+      The native MQI and JMS interfaces are not HTTP-based and are documented
+      as references only; only the REST and messaging surfaces ship with
+      machine-readable contracts.
+  - name: Queue Manager Scope
+    description: >-
+      Each REST endpoint is scoped to a specific queue manager; clients must
+      include the queue manager identifier in the request path where required.
+  - name: Versioning
+    description: >-
+      Artifacts target IBM MQ 9.x; older queue managers may not implement the
+      full surface described here.
+  - name: APIs.yml Sync
+    description: >-
+      The apis.yml index in this repository must reference all OpenAPI,
+      AsyncAPI, and JSON Schema files under their respective directories and
+      be updated when artifacts change.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
