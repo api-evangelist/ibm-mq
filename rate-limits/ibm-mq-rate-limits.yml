@@ -4,7 +4,8 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: IBM MQ
 providerId: ibm-mq
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
 tags:
   - Async
   - Enterprise
@@ -13,75 +14,38 @@ tags:
   - Middleware
   - Queue
   - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the IBM MQ API surface. Captures per-tier quotas,
-  burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to be replaced
-  with published provider limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+description: IBM MQ does not publish per-second HTTP rate limits in the same way as SaaS APIs; throughput
+  on managed MQ on Cloud is governed by the chosen reserved-capacity tier (Small / Medium / Large) and
+  the queue manager's configured maximum channels, MQI bind connections, and message size limits. On-premises
+  MQ throughput is bounded by the host hardware, channel definitions (MAXMSGS, SHARECNV), and queue depth
+  settings. Limits captured here describe the documented governance surfaces rather than fabricated TPS
+  numbers.
+notes: Specific per-second TPS numbers are workload- and tier-dependent; documented as 'varies' rather
+  than guessed. The IBM MQ administration REST API does not document fixed HTTP rate-limit headers.
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
   serviceUnavailable: 503
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
+  - name: IBM MQ on Cloud Reserved Capacity throughput
+    scope: deployment
+    metric: varies
+    limit: governed by Small / Medium / Large reserved-capacity tier
     applies:
       - IBM MQ REST API
       - IBM MQ Messaging REST API
       - IBM MQ JMS API
       - IBM MQ Native API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
+  - name: Queue manager channel limits
+    scope: queue-manager
+    metric: concurrent_connections
+    limit: governed by queue-manager MAXCHANNELS / MAXACTIVECHANNELS / SHARECNV
     applies:
-      - IBM MQ REST API
-      - IBM MQ Messaging REST API
       - IBM MQ JMS API
       - IBM MQ Native API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - IBM MQ REST API
-      - IBM MQ Messaging REST API
-      - IBM MQ JMS API
-      - IBM MQ Native API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - IBM MQ REST API
-      - IBM MQ Messaging REST API
-      - IBM MQ JMS API
-      - IBM MQ Native API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
+  - name: Message size
+    scope: queue
+    metric: bytes_per_message
+    limit: governed by queue MAXMSGL (default 4 MB, max 100 MB)
     applies:
       - IBM MQ REST API
       - IBM MQ Messaging REST API
@@ -89,17 +53,18 @@ limits:
       - IBM MQ Native API
 policies:
   - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
+    description: Clients receiving 2033 (MQRC_NO_MSG_AVAILABLE) or 2009 (MQRC_CONNECTION_BROKEN) should
+      reconnect with exponential backoff; HTTP clients should honor 429 / 503 with exponential backoff
+      and jitter.
+  - name: Channel Heartbeats
+    description: Channels use HBINT to detect inactivity; long-running consumers should tune heartbeat
+      and keepalive parameters to avoid spurious disconnects under load.
+  - name: Capacity Sizing
+    description: For IBM MQ on Cloud, pick a Reserved Capacity tier (Small / Medium / Large) sized to
+      peak throughput; tier upgrades are scheduled rather than instant.
   - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+    description: Even on dedicated deployments, sustained traffic that materially impacts shared infrastructure
+      may be subject to operational throttling.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

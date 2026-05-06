@@ -1,5 +1,6 @@
 specification: FinOps Framework
 specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
 alignedWith:
   framework: FinOps Foundation Framework
   frameworkUrl: https://www.finops.org/framework/
@@ -8,10 +9,11 @@ alignedWith:
   dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
 provider: IBM MQ
 providerId: ibm-mq
-publisherName: IBM MQ
-serviceCategory: API
+publisherName: IBM Corporation
+serviceCategory: Messaging + Integration
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
 tags:
   - Async
   - Enterprise
@@ -20,22 +22,32 @@ tags:
   - Middleware
   - Queue
   - FinOps
-  - Cost Management
   - FOCUS
-description: FinOps framework definition for the IBM MQ API surface. Provides a FOCUS-aligned mapping
-  for cost allocation, usage measurement, and unit-economics reporting across the provider's APIs.
+description: FOCUS-aligned FinOps shape for IBM MQ. The product is delivered both as IBM Cloud-managed
+  reserved-capacity deployments (subscription per deployment-month) and as on-premises licensed software
+  (PVU / VPC capacity license + S&S). Cost lines are deployment subscriptions, optional egress, and add-ons;
+  on-prem invoices are handled via IBM Passport Advantage.
+notes: Reserved-capacity dollar amounts intentionally omitted; reconcile against the IBM Cloud catalog
+  before flipping reconciled to true.
+sources:
+  - https://www.ibm.com/products/mq
+  - https://cloud.ibm.com/catalog/services/mq
 principles:
   - name: Visibility
-    description: Make API consumption costs visible to engineering, product, and finance teams in near
-      real-time.
+    description: For IBM MQ on Cloud, use the IBM Cloud Usage and Billing dashboard plus the Enterprise
+      Billing API to see deployment-month charges by region. For on-prem, surface usage via IBM License
+      Metric Tool (ILMT) PVU reports.
   - name: Allocation
-    description: Tag every chargeable API call with the consuming team, environment, application, and
-      feature so cost can be allocated.
+    description: Tag IBM Cloud resources with team, environment, and application tags so charges in the
+      Cost and Asset Management exports allocate cleanly. For on-prem, attach license entitlements to
+      cost centers in ILMT.
   - name: Optimization
-    description: Continuously evaluate request patterns, caching, batching, and tier selection to reduce
-      cost per useful unit of work.
+    description: Right-size the Reserved Capacity tier (Small / Medium / Large) to peak throughput; consolidate
+      under-utilized queue managers; consider committed-term contracts via IBM Sales for steady production
+      workloads.
   - name: Accountability
-    description: Establish budget owners and chargeback or showback flows for each consuming team.
+    description: Designate a queue-manager owner per business unit; review monthly IBM Cloud invoices and
+      ILMT reports against forecasted message throughput.
 domains:
   - name: Understand Usage and Cost
     capabilities:
@@ -55,7 +67,6 @@ domains:
       - Architecting for Cloud
       - Rate Optimization
       - Workload Optimization
-      - Cloud Sustainability
       - Licensing and SaaS
   - name: Manage the FinOps Practice
     capabilities:
@@ -63,9 +74,8 @@ domains:
       - FinOps Education and Enablement
       - Invoicing and Chargeback
       - Onboarding Workloads
-      - Intersecting Disciplines
 billingModel:
-  pricingCategory: Usage-Based
+  pricingCategory: Subscription + License
   billingFrequency: Monthly
   billingCurrency: USD
   chargeCategories:
@@ -77,41 +87,44 @@ billingModel:
   chargeFrequency: Recurring
 focusColumns:
   ServiceName: IBM MQ
-  ServiceCategory: Developer Tools / API
-  ProviderName: IBM MQ
-  PublisherName: IBM MQ
-  InvoiceIssuerName: IBM MQ
-  PricingCategory: Usage-Based
-  PricingUnit: request
+  ServiceCategory: Messaging + Integration
+  ProviderName: IBM
+  PublisherName: IBM Corporation
+  InvoiceIssuerName: IBM Corporation
+  PricingCategory: Subscription
+  PricingUnit: deployment-month
   BillingCurrency: USD
   ChargeCategory: Usage
 meters:
-  - name: api_requests
-    description: Count of billable API requests
-    unit: request
+  - name: deployment_month
+    description: Reserved-capacity managed MQ deployment-months (IBM MQ on Cloud)
+    unit: deployment-month
     aggregation: sum
     dimensions:
-      - api
-      - endpoint
       - tier
       - region
-      - consumer
+      - environment
+  - name: pvu_license
+    description: Processor value units licensed for on-premises queue managers
+    unit: PVU-month
+    aggregation: max
+    dimensions:
+      - hostname
+      - environment
   - name: data_egress
-    description: Bytes returned over the network in API responses
+    description: Outbound network bytes from managed MQ deployments
     unit: GB
     aggregation: sum
     dimensions:
-      - api
       - region
-      - consumer
-  - name: compute_seconds
-    description: Server-side compute consumed by the request, where applicable
-    unit: second
-    aggregation: sum
+      - destination
+  - name: queue_manager_count
+    description: Active queue managers under management
+    unit: queue-manager
+    aggregation: max
     dimensions:
-      - api
-      - endpoint
-      - tier
+      - team
+      - environment
 apis:
   - name: IBM MQ REST API
     baseURL: https://{host}:{port}/ibmmq/rest/v2
@@ -147,11 +160,11 @@ apis:
     serviceName: IBM MQ Native API
     serviceCategory: API
 unitEconomics:
-  - name: Cost per 1K Requests
-    metric: billed_cost / (api_requests / 1000)
+  - name: Cost per Million Messages
+    metric: billed_cost / (messages_processed / 1000000)
     target: TBD
-  - name: Cost per Active Consumer
-    metric: billed_cost / active_consumers
+  - name: Cost per Queue Manager
+    metric: billed_cost / queue_manager_count
     target: TBD
 maintainers:
   - FN: Kin Lane
