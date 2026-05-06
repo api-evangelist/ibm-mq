@@ -1,0 +1,902 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: IBM MQ Administration REST API
+  description: REST API for administering and monitoring IBM MQ queue managers, queues, topics, subscriptions, and channels.
+    Provides programmatic access to manage MQ objects and retrieve status information.
+  tags:
+  - Ibm
+  - Mq
+  - API
+  created: '2026-05-06'
+  modified: '2026-05-06'
+capability:
+  consumes:
+  - type: http
+    namespace: ibm-mq
+    baseUri: https://localhost:9443/ibmmq/rest/v2
+    description: IBM MQ Administration REST API HTTP API.
+    authentication:
+      type: basic
+      username: '{{IBM_MQ_USERNAME}}'
+      password: '{{IBM_MQ_PASSWORD}}'
+    resources:
+    - name: admin-qmgr
+      path: /admin/qmgr
+      operations:
+      - name: listqueuemanagers
+        method: GET
+        description: IBM MQ List queue managers
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Filter queue managers by name (supports wildcard *)
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+        - name: status
+          in: query
+          type: string
+          description: Comma-separated list of status attributes to return
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-qmgr-qmgrname
+      path: /admin/qmgr/{qmgrName}
+      operations:
+      - name: getqueuemanager
+        method: GET
+        description: IBM MQ Get queue manager details
+        inputParameters:
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+        - name: status
+          in: query
+          type: string
+          description: Comma-separated list of status attributes to return
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-qmgr-qmgrname-queue
+      path: /admin/qmgr/{qmgrName}/queue
+      operations:
+      - name: listqueues
+        method: GET
+        description: IBM MQ List queues
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Filter queues by name (supports wildcard *)
+        - name: type
+          in: query
+          type: string
+          description: Filter by queue type
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+        - name: status
+          in: query
+          type: string
+          description: Comma-separated list of status attributes to return
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createqueue
+        method: POST
+        description: IBM MQ Create a queue
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-qmgr-qmgrname-queue-queuename
+      path: /admin/qmgr/{qmgrName}/queue/{queueName}
+      operations:
+      - name: getqueue
+        method: GET
+        description: IBM MQ Get queue details
+        inputParameters:
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+        - name: status
+          in: query
+          type: string
+          description: Comma-separated list of status attributes to return
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatequeue
+        method: PATCH
+        description: IBM MQ Update a queue
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletequeue
+        method: DELETE
+        description: IBM MQ Delete a queue
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-qmgr-qmgrname-topic
+      path: /admin/qmgr/{qmgrName}/topic
+      operations:
+      - name: listtopics
+        method: GET
+        description: IBM MQ List topics
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Filter topics by name (supports wildcard *)
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createtopic
+        method: POST
+        description: IBM MQ Create a topic
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-qmgr-qmgrname-topic-topicname
+      path: /admin/qmgr/{qmgrName}/topic/{topicName}
+      operations:
+      - name: gettopic
+        method: GET
+        description: IBM MQ Get topic details
+        inputParameters:
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatetopic
+        method: PATCH
+        description: IBM MQ Update a topic
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletetopic
+        method: DELETE
+        description: IBM MQ Delete a topic
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-qmgr-qmgrname-subscription
+      path: /admin/qmgr/{qmgrName}/subscription
+      operations:
+      - name: listsubscriptions
+        method: GET
+        description: IBM MQ List subscriptions
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Filter subscriptions by name (supports wildcard *)
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createsubscription
+        method: POST
+        description: IBM MQ Create a subscription
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-qmgr-qmgrname-subscription-subscriptionid
+      path: /admin/qmgr/{qmgrName}/subscription/{subscriptionId}
+      operations:
+      - name: getsubscription
+        method: GET
+        description: IBM MQ Get subscription details
+        inputParameters:
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletesubscription
+        method: DELETE
+        description: IBM MQ Delete a subscription
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-qmgr-qmgrname-channel
+      path: /admin/qmgr/{qmgrName}/channel
+      operations:
+      - name: listchannels
+        method: GET
+        description: IBM MQ List channels
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Filter channels by name (supports wildcard *)
+        - name: type
+          in: query
+          type: string
+          description: Filter by channel type
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+        - name: status
+          in: query
+          type: string
+          description: Comma-separated list of status attributes to return
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createchannel
+        method: POST
+        description: IBM MQ Create a channel
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-qmgr-qmgrname-channel-channelname
+      path: /admin/qmgr/{qmgrName}/channel/{channelName}
+      operations:
+      - name: getchannel
+        method: GET
+        description: IBM MQ Get channel details
+        inputParameters:
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+        - name: status
+          in: query
+          type: string
+          description: Comma-separated list of status attributes to return
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatechannel
+        method: PATCH
+        description: IBM MQ Update a channel
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletechannel
+        method: DELETE
+        description: IBM MQ Delete a channel
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: admin-installation
+      path: /admin/installation
+      operations:
+      - name: listinstallations
+        method: GET
+        description: IBM MQ List MQ installations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    port: 8080
+    namespace: ibm-mq-rest
+    description: REST adapter for IBM MQ Administration REST API.
+    resources:
+    - path: /admin/qmgr
+      name: listqueuemanagers
+      operations:
+      - method: GET
+        name: listqueuemanagers
+        description: IBM MQ List queue managers
+        call: ibm-mq.listqueuemanagers
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}
+      name: getqueuemanager
+      operations:
+      - method: GET
+        name: getqueuemanager
+        description: IBM MQ Get queue manager details
+        call: ibm-mq.getqueuemanager
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/queue
+      name: listqueues
+      operations:
+      - method: GET
+        name: listqueues
+        description: IBM MQ List queues
+        call: ibm-mq.listqueues
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/queue
+      name: createqueue
+      operations:
+      - method: POST
+        name: createqueue
+        description: IBM MQ Create a queue
+        call: ibm-mq.createqueue
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/queue/{queueName}
+      name: getqueue
+      operations:
+      - method: GET
+        name: getqueue
+        description: IBM MQ Get queue details
+        call: ibm-mq.getqueue
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/queue/{queueName}
+      name: updatequeue
+      operations:
+      - method: PATCH
+        name: updatequeue
+        description: IBM MQ Update a queue
+        call: ibm-mq.updatequeue
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/queue/{queueName}
+      name: deletequeue
+      operations:
+      - method: DELETE
+        name: deletequeue
+        description: IBM MQ Delete a queue
+        call: ibm-mq.deletequeue
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/topic
+      name: listtopics
+      operations:
+      - method: GET
+        name: listtopics
+        description: IBM MQ List topics
+        call: ibm-mq.listtopics
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/topic
+      name: createtopic
+      operations:
+      - method: POST
+        name: createtopic
+        description: IBM MQ Create a topic
+        call: ibm-mq.createtopic
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/topic/{topicName}
+      name: gettopic
+      operations:
+      - method: GET
+        name: gettopic
+        description: IBM MQ Get topic details
+        call: ibm-mq.gettopic
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/topic/{topicName}
+      name: updatetopic
+      operations:
+      - method: PATCH
+        name: updatetopic
+        description: IBM MQ Update a topic
+        call: ibm-mq.updatetopic
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/topic/{topicName}
+      name: deletetopic
+      operations:
+      - method: DELETE
+        name: deletetopic
+        description: IBM MQ Delete a topic
+        call: ibm-mq.deletetopic
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/subscription
+      name: listsubscriptions
+      operations:
+      - method: GET
+        name: listsubscriptions
+        description: IBM MQ List subscriptions
+        call: ibm-mq.listsubscriptions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/subscription
+      name: createsubscription
+      operations:
+      - method: POST
+        name: createsubscription
+        description: IBM MQ Create a subscription
+        call: ibm-mq.createsubscription
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/subscription/{subscriptionId}
+      name: getsubscription
+      operations:
+      - method: GET
+        name: getsubscription
+        description: IBM MQ Get subscription details
+        call: ibm-mq.getsubscription
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/subscription/{subscriptionId}
+      name: deletesubscription
+      operations:
+      - method: DELETE
+        name: deletesubscription
+        description: IBM MQ Delete a subscription
+        call: ibm-mq.deletesubscription
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/channel
+      name: listchannels
+      operations:
+      - method: GET
+        name: listchannels
+        description: IBM MQ List channels
+        call: ibm-mq.listchannels
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/channel
+      name: createchannel
+      operations:
+      - method: POST
+        name: createchannel
+        description: IBM MQ Create a channel
+        call: ibm-mq.createchannel
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/channel/{channelName}
+      name: getchannel
+      operations:
+      - method: GET
+        name: getchannel
+        description: IBM MQ Get channel details
+        call: ibm-mq.getchannel
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/channel/{channelName}
+      name: updatechannel
+      operations:
+      - method: PATCH
+        name: updatechannel
+        description: IBM MQ Update a channel
+        call: ibm-mq.updatechannel
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/qmgr/{qmgrName}/channel/{channelName}
+      name: deletechannel
+      operations:
+      - method: DELETE
+        name: deletechannel
+        description: IBM MQ Delete a channel
+        call: ibm-mq.deletechannel
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /admin/installation
+      name: listinstallations
+      operations:
+      - method: GET
+        name: listinstallations
+        description: IBM MQ List MQ installations
+        call: ibm-mq.listinstallations
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: ibm-mq-mcp
+    transport: http
+    description: MCP adapter for IBM MQ Administration REST API for AI agent use.
+    tools:
+    - name: listqueuemanagers
+      description: IBM MQ List queue managers
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ibm-mq.listqueuemanagers
+      with:
+        name: tools.name
+        attributes: tools.attributes
+        status: tools.status
+      inputParameters:
+      - name: name
+        type: string
+        description: Filter queue managers by name (supports wildcard *)
+      - name: attributes
+        type: string
+        description: Comma-separated list of attributes to return
+      - name: status
+        type: string
+        description: Comma-separated list of status attributes to return
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getqueuemanager
+      description: IBM MQ Get queue manager details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ibm-mq.getqueuemanager
+      with:
+        attributes: tools.attributes
+        status: tools.status
+      inputParameters:
+      - name: attributes
+        type: string
+        description: Comma-separated list of attributes to return
+      - name: status
+        type: string
+        description: Comma-separated list of status attributes to return
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listqueues
+      description: IBM MQ List queues
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ibm-mq.listqueues
+      with:
+        name: tools.name
+        type: tools.type
+        attributes: tools.attributes
+        status: tools.status
+      inputParameters:
+      - name: name
+        type: string
+        description: Filter queues by name (supports wildcard *)
+      - name: type
+        type: string
+        description: Filter by queue type
+      - name: attributes
+        type: string
+        description: Comma-separated list of attributes to return
+      - name: status
+        type: string
+        description: Comma-separated list of status attributes to return
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createqueue
+      description: IBM MQ Create a queue
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ibm-mq.createqueue
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getqueue
+      description: IBM MQ Get queue details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ibm-mq.getqueue
+      with:
+        attributes: tools.attributes
+        status: tools.status
+      inputParameters:
+      - name: attributes
+        type: string
+        description: Comma-separated list of attributes to return
+      - name: status
+        type: string
+        description: Comma-separated list of status attributes to return
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatequeue
+      description: IBM MQ Update a queue
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ibm-mq.updatequeue
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletequeue
+      description: IBM MQ Delete a queue
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: ibm-mq.deletequeue
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listtopics
+      description: IBM MQ List topics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ibm-mq.listtopics
+      with:
+        name: tools.name
+        attributes: tools.attributes
+      inputParameters:
+      - name: name
+        type: string
+        description: Filter topics by name (supports wildcard *)
+      - name: attributes
+        type: string
+        description: Comma-separated list of attributes to return
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createtopic
+      description: IBM MQ Create a topic
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ibm-mq.createtopic
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: gettopic
+      description: IBM MQ Get topic details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ibm-mq.gettopic
+      with:
+        attributes: tools.attributes
+      inputParameters:
+      - name: attributes
+        type: string
+        description: Comma-separated list of attributes to return
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatetopic
+      description: IBM MQ Update a topic
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ibm-mq.updatetopic
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletetopic
+      description: IBM MQ Delete a topic
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: ibm-mq.deletetopic
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listsubscriptions
+      description: IBM MQ List subscriptions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ibm-mq.listsubscriptions
+      with:
+        name: tools.name
+        attributes: tools.attributes
+      inputParameters:
+      - name: name
+        type: string
+        description: Filter subscriptions by name (supports wildcard *)
+      - name: attributes
+        type: string
+        description: Comma-separated list of attributes to return
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createsubscription
+      description: IBM MQ Create a subscription
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ibm-mq.createsubscription
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getsubscription
+      description: IBM MQ Get subscription details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ibm-mq.getsubscription
+      with:
+        attributes: tools.attributes
+      inputParameters:
+      - name: attributes
+        type: string
+        description: Comma-separated list of attributes to return
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletesubscription
+      description: IBM MQ Delete a subscription
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: ibm-mq.deletesubscription
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listchannels
+      description: IBM MQ List channels
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ibm-mq.listchannels
+      with:
+        name: tools.name
+        type: tools.type
+        attributes: tools.attributes
+        status: tools.status
+      inputParameters:
+      - name: name
+        type: string
+        description: Filter channels by name (supports wildcard *)
+      - name: type
+        type: string
+        description: Filter by channel type
+      - name: attributes
+        type: string
+        description: Comma-separated list of attributes to return
+      - name: status
+        type: string
+        description: Comma-separated list of status attributes to return
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createchannel
+      description: IBM MQ Create a channel
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ibm-mq.createchannel
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getchannel
+      description: IBM MQ Get channel details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ibm-mq.getchannel
+      with:
+        attributes: tools.attributes
+        status: tools.status
+      inputParameters:
+      - name: attributes
+        type: string
+        description: Comma-separated list of attributes to return
+      - name: status
+        type: string
+        description: Comma-separated list of status attributes to return
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatechannel
+      description: IBM MQ Update a channel
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ibm-mq.updatechannel
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletechannel
+      description: IBM MQ Delete a channel
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: ibm-mq.deletechannel
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listinstallations
+      description: IBM MQ List MQ installations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ibm-mq.listinstallations
+      outputParameters:
+      - type: object
+        mapping: $.
+binds:
+- namespace: env
+  keys:
+    IBM_MQ_USERNAME: IBM_MQ_USERNAME
+    IBM_MQ_PASSWORD: IBM_MQ_PASSWORD
