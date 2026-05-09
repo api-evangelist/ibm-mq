@@ -1,0 +1,14 @@
+{
+  "repo": "ibm-mq",
+  "feeds": [
+    {
+      "source": "https://community.ibm.com/community/user/integration/communities/community-home?CommunityKey=183ec850-4947-49c8-9a2e-8e7c7fc46c64",
+      "feed_url": "",
+      "title": "",
+      "saved": 0,
+      "error": "no_feed"
+    }
+  ],
+  "fetched": "2026-05-09T20:17:51Z",
+  "post_count": 0
+}
