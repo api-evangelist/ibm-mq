@@ -26,7 +26,7 @@ apis:
       - Messaging
       - Rest
     properties:
-      - type: documentation
+      - type: Documentation
         url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest
       - type: openapi
         url: https://www.ibm.com/docs/en/SSFKSJ_9.3.0/com.ibm.mq.dev.doc/rest_api_swagger.json
@@ -48,7 +48,7 @@ apis:
       - Producer
       - Rest
     properties:
-      - type: documentation
+      - type: Documentation
         url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
       - type: openapi
         url: https://www.ibm.com/docs/en/SSFKSJ_9.3.0/com.ibm.mq.dev.doc/messaging_rest_api_swagger.json
@@ -68,7 +68,7 @@ apis:
       - Jms
       - Messaging
     properties:
-      - type: documentation
+      - type: Documentation
         url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=mq-developing-jms-applications
       - type: sdk
         url: https://mvnrepository.com/artifact/com.ibm.mq/com.ibm.mq.allclient
@@ -88,7 +88,7 @@ apis:
       - Native
       - Procedural
     properties:
-      - type: documentation
+      - type: Documentation
         url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=programming-mqi
     contact:
       - FN: IBM Support
@@ -107,7 +107,7 @@ common:
     url: https://www.ibm.com/mysupport
   - type: blog
     url: https://community.ibm.com/community/user/integration/communities/community-home?CommunityKey=183ec850-4947-49c8-9a2e-8e7c7fc46c64
-  - type: JSON-LD
+  - type: JSONLD
     url: json-ld/ibm-mq-context.jsonld
   - type: JSONSchema
     url: json-schema/ibm-mq-queue-manager-schema.json
