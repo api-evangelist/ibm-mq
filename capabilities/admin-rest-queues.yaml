@@ -1,0 +1,241 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: IBM MQ Administration REST API — Queues
+  description: 'IBM MQ Administration REST API — Queues. 5 operations. Lead operation: IBM MQ List queues. Self-contained
+    Naftiko capability covering one Ibm Mq business surface.'
+  tags:
+  - Ibm Mq
+  - Queues
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    IBM_MQ_API_KEY: IBM_MQ_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: admin-rest-queues
+    baseUri: https://{host}:{port}/ibmmq/rest/v2
+    description: IBM MQ Administration REST API — Queues business capability. Self-contained, no shared references.
+    resources:
+    - name: admin-qmgr-qmgrName-queue
+      path: /admin/qmgr/{qmgrName}/queue
+      operations:
+      - name: listqueues
+        method: GET
+        description: IBM MQ List queues
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Filter queues by name (supports wildcard *)
+        - name: type
+          in: query
+          type: string
+          description: Filter by queue type
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+        - name: status
+          in: query
+          type: string
+          description: Comma-separated list of status attributes to return
+      - name: createqueue
+        method: POST
+        description: IBM MQ Create a queue
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: admin-qmgr-qmgrName-queue-queueName
+      path: /admin/qmgr/{qmgrName}/queue/{queueName}
+      operations:
+      - name: getqueue
+        method: GET
+        description: IBM MQ Get queue details
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+        - name: status
+          in: query
+          type: string
+          description: Comma-separated list of status attributes to return
+      - name: updatequeue
+        method: PATCH
+        description: IBM MQ Update a queue
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletequeue
+        method: DELETE
+        description: IBM MQ Delete a queue
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: LtpaToken2
+      value: '{{env.IBM_MQ_API_KEY}}'
+      placement: cookie
+  exposes:
+  - type: rest
+    namespace: admin-rest-queues-rest
+    port: 8080
+    description: REST adapter for IBM MQ Administration REST API — Queues. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/admin/qmgr/{qmgrname}/queue
+      name: admin-qmgr-qmgrname-queue
+      description: REST surface for admin-qmgr-qmgrName-queue.
+      operations:
+      - method: GET
+        name: listqueues
+        description: IBM MQ List queues
+        call: admin-rest-queues.listqueues
+        with:
+          name: rest.name
+          type: rest.type
+          attributes: rest.attributes
+          status: rest.status
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createqueue
+        description: IBM MQ Create a queue
+        call: admin-rest-queues.createqueue
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/qmgr/{qmgrname}/queue/{queuename}
+      name: admin-qmgr-qmgrname-queue-queuename
+      description: REST surface for admin-qmgr-qmgrName-queue-queueName.
+      operations:
+      - method: GET
+        name: getqueue
+        description: IBM MQ Get queue details
+        call: admin-rest-queues.getqueue
+        with:
+          attributes: rest.attributes
+          status: rest.status
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updatequeue
+        description: IBM MQ Update a queue
+        call: admin-rest-queues.updatequeue
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletequeue
+        description: IBM MQ Delete a queue
+        call: admin-rest-queues.deletequeue
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: admin-rest-queues-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for IBM MQ Administration REST API — Queues. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: ibm-mq-list-queues
+      description: IBM MQ List queues
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-rest-queues.listqueues
+      with:
+        name: tools.name
+        type: tools.type
+        attributes: tools.attributes
+        status: tools.status
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-create-queue
+      description: IBM MQ Create a queue
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: admin-rest-queues.createqueue
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-get-queue-details
+      description: IBM MQ Get queue details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-rest-queues.getqueue
+      with:
+        attributes: tools.attributes
+        status: tools.status
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-update-queue
+      description: IBM MQ Update a queue
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: admin-rest-queues.updatequeue
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-delete-queue
+      description: IBM MQ Delete a queue
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: admin-rest-queues.deletequeue
+      outputParameters:
+      - type: object
+        mapping: $.

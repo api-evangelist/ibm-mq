@@ -1,0 +1,192 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: IBM MQ Messaging REST API — Queue Messaging
+  description: 'IBM MQ Messaging REST API — Queue Messaging. 3 operations. Lead operation: IBM MQ Send a message to a queue.
+    Self-contained Naftiko capability covering one Ibm Mq business surface.'
+  tags:
+  - Ibm Mq
+  - Queue Messaging
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    IBM_MQ_API_KEY: IBM_MQ_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: messaging-rest-queue-messaging
+    baseUri: https://{host}:{port}/ibmmq/rest/v2
+    description: IBM MQ Messaging REST API — Queue Messaging business capability. Self-contained, no shared references.
+    resources:
+    - name: messaging-qmgr-qmgrName-queue-queueName-message
+      path: /messaging/qmgr/{qmgrName}/queue/{queueName}/message
+      operations:
+      - name: sendmessagetoqueue
+        method: POST
+        description: IBM MQ Send a message to a queue
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ibm-mq-md-correlationId
+          in: header
+          type: string
+          description: Correlation ID for the message (hex-encoded)
+        - name: ibm-mq-md-expiry
+          in: header
+          type: integer
+          description: Message expiry time in tenths of a second
+        - name: ibm-mq-md-persistence
+          in: header
+          type: string
+          description: Message persistence
+        - name: ibm-mq-md-replyTo
+          in: header
+          type: string
+          description: Reply-to queue name in format queueName[@qmgrName]
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: receivemessagefromqueue
+        method: GET
+        description: IBM MQ Receive a message from a queue
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: correlationId
+          in: query
+          type: string
+          description: Filter by correlation ID (hex-encoded)
+        - name: messageId
+          in: query
+          type: string
+          description: Filter by message ID (hex-encoded)
+        - name: wait
+          in: query
+          type: integer
+          description: Maximum time in milliseconds to wait for a message
+      - name: browsemessagefromqueue
+        method: DELETE
+        description: IBM MQ Browse a message on a queue
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: correlationId
+          in: query
+          type: string
+          description: Filter by correlation ID (hex-encoded)
+        - name: messageId
+          in: query
+          type: string
+          description: Filter by message ID (hex-encoded)
+    authentication:
+      type: apikey
+      key: LtpaToken2
+      value: '{{env.IBM_MQ_API_KEY}}'
+      placement: cookie
+  exposes:
+  - type: rest
+    namespace: messaging-rest-queue-messaging-rest
+    port: 8080
+    description: REST adapter for IBM MQ Messaging REST API — Queue Messaging. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/messaging/qmgr/{qmgrname}/queue/{queuename}/message
+      name: messaging-qmgr-qmgrname-queue-queuename-message
+      description: REST surface for messaging-qmgr-qmgrName-queue-queueName-message.
+      operations:
+      - method: POST
+        name: sendmessagetoqueue
+        description: IBM MQ Send a message to a queue
+        call: messaging-rest-queue-messaging.sendmessagetoqueue
+        with:
+          ibm-mq-md-correlationId: rest.ibm-mq-md-correlationId
+          ibm-mq-md-expiry: rest.ibm-mq-md-expiry
+          ibm-mq-md-persistence: rest.ibm-mq-md-persistence
+          ibm-mq-md-replyTo: rest.ibm-mq-md-replyTo
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: receivemessagefromqueue
+        description: IBM MQ Receive a message from a queue
+        call: messaging-rest-queue-messaging.receivemessagefromqueue
+        with:
+          correlationId: rest.correlationId
+          messageId: rest.messageId
+          wait: rest.wait
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: browsemessagefromqueue
+        description: IBM MQ Browse a message on a queue
+        call: messaging-rest-queue-messaging.browsemessagefromqueue
+        with:
+          correlationId: rest.correlationId
+          messageId: rest.messageId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: messaging-rest-queue-messaging-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for IBM MQ Messaging REST API — Queue Messaging. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: ibm-mq-send-message-queue
+      description: IBM MQ Send a message to a queue
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: messaging-rest-queue-messaging.sendmessagetoqueue
+      with:
+        ibm-mq-md-correlationId: tools.ibm-mq-md-correlationId
+        ibm-mq-md-expiry: tools.ibm-mq-md-expiry
+        ibm-mq-md-persistence: tools.ibm-mq-md-persistence
+        ibm-mq-md-replyTo: tools.ibm-mq-md-replyTo
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-receive-message-queue
+      description: IBM MQ Receive a message from a queue
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: messaging-rest-queue-messaging.receivemessagefromqueue
+      with:
+        correlationId: tools.correlationId
+        messageId: tools.messageId
+        wait: tools.wait
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-browse-message-queue
+      description: IBM MQ Browse a message on a queue
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: messaging-rest-queue-messaging.browsemessagefromqueue
+      with:
+        correlationId: tools.correlationId
+        messageId: tools.messageId
+      outputParameters:
+      - type: object
+        mapping: $.

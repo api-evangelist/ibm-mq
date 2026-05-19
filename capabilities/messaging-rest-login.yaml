@@ -1,0 +1,107 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: IBM MQ Messaging REST API — Login
+  description: 'IBM MQ Messaging REST API — Login. 2 operations. Lead operation: IBM MQ Authenticate and obtain LTPA token.
+    Self-contained Naftiko capability covering one Ibm Mq business surface.'
+  tags:
+  - Ibm Mq
+  - Login
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    IBM_MQ_API_KEY: IBM_MQ_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: messaging-rest-login
+    baseUri: https://{host}:{port}/ibmmq/rest/v2
+    description: IBM MQ Messaging REST API — Login business capability. Self-contained, no shared references.
+    resources:
+    - name: login
+      path: /login
+      operations:
+      - name: login
+        method: POST
+        description: IBM MQ Authenticate and obtain LTPA token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: logout
+        method: DELETE
+        description: IBM MQ Log out and invalidate token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: LtpaToken2
+      value: '{{env.IBM_MQ_API_KEY}}'
+      placement: cookie
+  exposes:
+  - type: rest
+    namespace: messaging-rest-login-rest
+    port: 8080
+    description: REST adapter for IBM MQ Messaging REST API — Login. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/login
+      name: login
+      description: REST surface for login.
+      operations:
+      - method: POST
+        name: login
+        description: IBM MQ Authenticate and obtain LTPA token
+        call: messaging-rest-login.login
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: logout
+        description: IBM MQ Log out and invalidate token
+        call: messaging-rest-login.logout
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: messaging-rest-login-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for IBM MQ Messaging REST API — Login. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: ibm-mq-authenticate-and-obtain
+      description: IBM MQ Authenticate and obtain LTPA token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: messaging-rest-login.login
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-log-out-and
+      description: IBM MQ Log out and invalidate token
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: messaging-rest-login.logout
+      outputParameters:
+      - type: object
+        mapping: $.

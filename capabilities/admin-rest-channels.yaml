@@ -1,0 +1,241 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: IBM MQ Administration REST API — Channels
+  description: 'IBM MQ Administration REST API — Channels. 5 operations. Lead operation: IBM MQ List channels. Self-contained
+    Naftiko capability covering one Ibm Mq business surface.'
+  tags:
+  - Ibm Mq
+  - Channels
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    IBM_MQ_API_KEY: IBM_MQ_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: admin-rest-channels
+    baseUri: https://{host}:{port}/ibmmq/rest/v2
+    description: IBM MQ Administration REST API — Channels business capability. Self-contained, no shared references.
+    resources:
+    - name: admin-qmgr-qmgrName-channel
+      path: /admin/qmgr/{qmgrName}/channel
+      operations:
+      - name: listchannels
+        method: GET
+        description: IBM MQ List channels
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Filter channels by name (supports wildcard *)
+        - name: type
+          in: query
+          type: string
+          description: Filter by channel type
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+        - name: status
+          in: query
+          type: string
+          description: Comma-separated list of status attributes to return
+      - name: createchannel
+        method: POST
+        description: IBM MQ Create a channel
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: admin-qmgr-qmgrName-channel-channelName
+      path: /admin/qmgr/{qmgrName}/channel/{channelName}
+      operations:
+      - name: getchannel
+        method: GET
+        description: IBM MQ Get channel details
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+        - name: status
+          in: query
+          type: string
+          description: Comma-separated list of status attributes to return
+      - name: updatechannel
+        method: PATCH
+        description: IBM MQ Update a channel
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletechannel
+        method: DELETE
+        description: IBM MQ Delete a channel
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: LtpaToken2
+      value: '{{env.IBM_MQ_API_KEY}}'
+      placement: cookie
+  exposes:
+  - type: rest
+    namespace: admin-rest-channels-rest
+    port: 8080
+    description: REST adapter for IBM MQ Administration REST API — Channels. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/admin/qmgr/{qmgrname}/channel
+      name: admin-qmgr-qmgrname-channel
+      description: REST surface for admin-qmgr-qmgrName-channel.
+      operations:
+      - method: GET
+        name: listchannels
+        description: IBM MQ List channels
+        call: admin-rest-channels.listchannels
+        with:
+          name: rest.name
+          type: rest.type
+          attributes: rest.attributes
+          status: rest.status
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createchannel
+        description: IBM MQ Create a channel
+        call: admin-rest-channels.createchannel
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/qmgr/{qmgrname}/channel/{channelname}
+      name: admin-qmgr-qmgrname-channel-channelname
+      description: REST surface for admin-qmgr-qmgrName-channel-channelName.
+      operations:
+      - method: GET
+        name: getchannel
+        description: IBM MQ Get channel details
+        call: admin-rest-channels.getchannel
+        with:
+          attributes: rest.attributes
+          status: rest.status
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updatechannel
+        description: IBM MQ Update a channel
+        call: admin-rest-channels.updatechannel
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletechannel
+        description: IBM MQ Delete a channel
+        call: admin-rest-channels.deletechannel
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: admin-rest-channels-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for IBM MQ Administration REST API — Channels. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: ibm-mq-list-channels
+      description: IBM MQ List channels
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-rest-channels.listchannels
+      with:
+        name: tools.name
+        type: tools.type
+        attributes: tools.attributes
+        status: tools.status
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-create-channel
+      description: IBM MQ Create a channel
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: admin-rest-channels.createchannel
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-get-channel-details
+      description: IBM MQ Get channel details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-rest-channels.getchannel
+      with:
+        attributes: tools.attributes
+        status: tools.status
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-update-channel
+      description: IBM MQ Update a channel
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: admin-rest-channels.updatechannel
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-delete-channel
+      description: IBM MQ Delete a channel
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: admin-rest-channels.deletechannel
+      outputParameters:
+      - type: object
+        mapping: $.

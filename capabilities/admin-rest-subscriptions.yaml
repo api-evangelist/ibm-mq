@@ -1,0 +1,188 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: IBM MQ Administration REST API — Subscriptions
+  description: 'IBM MQ Administration REST API — Subscriptions. 4 operations. Lead operation: IBM MQ List subscriptions. Self-contained
+    Naftiko capability covering one Ibm Mq business surface.'
+  tags:
+  - Ibm Mq
+  - Subscriptions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    IBM_MQ_API_KEY: IBM_MQ_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: admin-rest-subscriptions
+    baseUri: https://{host}:{port}/ibmmq/rest/v2
+    description: IBM MQ Administration REST API — Subscriptions business capability. Self-contained, no shared references.
+    resources:
+    - name: admin-qmgr-qmgrName-subscription
+      path: /admin/qmgr/{qmgrName}/subscription
+      operations:
+      - name: listsubscriptions
+        method: GET
+        description: IBM MQ List subscriptions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Filter subscriptions by name (supports wildcard *)
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+      - name: createsubscription
+        method: POST
+        description: IBM MQ Create a subscription
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: admin-qmgr-qmgrName-subscription-subscriptionId
+      path: /admin/qmgr/{qmgrName}/subscription/{subscriptionId}
+      operations:
+      - name: getsubscription
+        method: GET
+        description: IBM MQ Get subscription details
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+      - name: deletesubscription
+        method: DELETE
+        description: IBM MQ Delete a subscription
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: LtpaToken2
+      value: '{{env.IBM_MQ_API_KEY}}'
+      placement: cookie
+  exposes:
+  - type: rest
+    namespace: admin-rest-subscriptions-rest
+    port: 8080
+    description: REST adapter for IBM MQ Administration REST API — Subscriptions. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/admin/qmgr/{qmgrname}/subscription
+      name: admin-qmgr-qmgrname-subscription
+      description: REST surface for admin-qmgr-qmgrName-subscription.
+      operations:
+      - method: GET
+        name: listsubscriptions
+        description: IBM MQ List subscriptions
+        call: admin-rest-subscriptions.listsubscriptions
+        with:
+          name: rest.name
+          attributes: rest.attributes
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createsubscription
+        description: IBM MQ Create a subscription
+        call: admin-rest-subscriptions.createsubscription
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/qmgr/{qmgrname}/subscription/{subscriptionid}
+      name: admin-qmgr-qmgrname-subscription-subscriptionid
+      description: REST surface for admin-qmgr-qmgrName-subscription-subscriptionId.
+      operations:
+      - method: GET
+        name: getsubscription
+        description: IBM MQ Get subscription details
+        call: admin-rest-subscriptions.getsubscription
+        with:
+          attributes: rest.attributes
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletesubscription
+        description: IBM MQ Delete a subscription
+        call: admin-rest-subscriptions.deletesubscription
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: admin-rest-subscriptions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for IBM MQ Administration REST API — Subscriptions. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: ibm-mq-list-subscriptions
+      description: IBM MQ List subscriptions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-rest-subscriptions.listsubscriptions
+      with:
+        name: tools.name
+        attributes: tools.attributes
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-create-subscription
+      description: IBM MQ Create a subscription
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: admin-rest-subscriptions.createsubscription
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-get-subscription-details
+      description: IBM MQ Get subscription details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-rest-subscriptions.getsubscription
+      with:
+        attributes: tools.attributes
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-delete-subscription
+      description: IBM MQ Delete a subscription
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: admin-rest-subscriptions.deletesubscription
+      outputParameters:
+      - type: object
+        mapping: $.

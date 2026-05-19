@@ -1,0 +1,72 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: IBM MQ Administration REST API — Installations
+  description: 'IBM MQ Administration REST API — Installations. 1 operations. Lead operation: IBM MQ List MQ installations.
+    Self-contained Naftiko capability covering one Ibm Mq business surface.'
+  tags:
+  - Ibm Mq
+  - Installations
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    IBM_MQ_API_KEY: IBM_MQ_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: admin-rest-installations
+    baseUri: https://{host}:{port}/ibmmq/rest/v2
+    description: IBM MQ Administration REST API — Installations business capability. Self-contained, no shared references.
+    resources:
+    - name: admin-installation
+      path: /admin/installation
+      operations:
+      - name: listinstallations
+        method: GET
+        description: IBM MQ List MQ installations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: LtpaToken2
+      value: '{{env.IBM_MQ_API_KEY}}'
+      placement: cookie
+  exposes:
+  - type: rest
+    namespace: admin-rest-installations-rest
+    port: 8080
+    description: REST adapter for IBM MQ Administration REST API — Installations. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/admin/installation
+      name: admin-installation
+      description: REST surface for admin-installation.
+      operations:
+      - method: GET
+        name: listinstallations
+        description: IBM MQ List MQ installations
+        call: admin-rest-installations.listinstallations
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: admin-rest-installations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for IBM MQ Administration REST API — Installations. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: ibm-mq-list-mq-installations
+      description: IBM MQ List MQ installations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-rest-installations.listinstallations
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,107 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: IBM MQ Messaging REST API — Topic Messaging
+  description: 'IBM MQ Messaging REST API — Topic Messaging. 1 operations. Lead operation: IBM MQ Publish a message to a topic.
+    Self-contained Naftiko capability covering one Ibm Mq business surface.'
+  tags:
+  - Ibm Mq
+  - Topic Messaging
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    IBM_MQ_API_KEY: IBM_MQ_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: messaging-rest-topic-messaging
+    baseUri: https://{host}:{port}/ibmmq/rest/v2
+    description: IBM MQ Messaging REST API — Topic Messaging business capability. Self-contained, no shared references.
+    resources:
+    - name: messaging-qmgr-qmgrName-topic-topicString-message
+      path: /messaging/qmgr/{qmgrName}/topic/{topicString}/message
+      operations:
+      - name: publishmessagetotopic
+        method: POST
+        description: IBM MQ Publish a message to a topic
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: topicString
+          in: path
+          type: string
+          description: The topic string to publish to (URL-encoded)
+          required: true
+        - name: ibm-mq-md-correlationId
+          in: header
+          type: string
+          description: Correlation ID for the message
+        - name: ibm-mq-md-expiry
+          in: header
+          type: integer
+          description: Message expiry time in tenths of a second
+        - name: ibm-mq-md-persistence
+          in: header
+          type: string
+          description: Message persistence
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: LtpaToken2
+      value: '{{env.IBM_MQ_API_KEY}}'
+      placement: cookie
+  exposes:
+  - type: rest
+    namespace: messaging-rest-topic-messaging-rest
+    port: 8080
+    description: REST adapter for IBM MQ Messaging REST API — Topic Messaging. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/messaging/qmgr/{qmgrname}/topic/{topicstring}/message
+      name: messaging-qmgr-qmgrname-topic-topicstring-message
+      description: REST surface for messaging-qmgr-qmgrName-topic-topicString-message.
+      operations:
+      - method: POST
+        name: publishmessagetotopic
+        description: IBM MQ Publish a message to a topic
+        call: messaging-rest-topic-messaging.publishmessagetotopic
+        with:
+          topicString: rest.topicString
+          ibm-mq-md-correlationId: rest.ibm-mq-md-correlationId
+          ibm-mq-md-expiry: rest.ibm-mq-md-expiry
+          ibm-mq-md-persistence: rest.ibm-mq-md-persistence
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: messaging-rest-topic-messaging-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for IBM MQ Messaging REST API — Topic Messaging. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: ibm-mq-publish-message-topic
+      description: IBM MQ Publish a message to a topic
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: messaging-rest-topic-messaging.publishmessagetotopic
+      with:
+        topicString: tools.topicString
+        ibm-mq-md-correlationId: tools.ibm-mq-md-correlationId
+        ibm-mq-md-expiry: tools.ibm-mq-md-expiry
+        ibm-mq-md-persistence: tools.ibm-mq-md-persistence
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

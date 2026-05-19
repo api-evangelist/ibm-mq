@@ -1,0 +1,140 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: IBM MQ Administration REST API — Queue Managers
+  description: 'IBM MQ Administration REST API — Queue Managers. 2 operations. Lead operation: IBM MQ List queue managers.
+    Self-contained Naftiko capability covering one Ibm Mq business surface.'
+  tags:
+  - Ibm Mq
+  - Queue Managers
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    IBM_MQ_API_KEY: IBM_MQ_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: admin-rest-queue-managers
+    baseUri: https://{host}:{port}/ibmmq/rest/v2
+    description: IBM MQ Administration REST API — Queue Managers business capability. Self-contained, no shared references.
+    resources:
+    - name: admin-qmgr
+      path: /admin/qmgr
+      operations:
+      - name: listqueuemanagers
+        method: GET
+        description: IBM MQ List queue managers
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Filter queue managers by name (supports wildcard *)
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+        - name: status
+          in: query
+          type: string
+          description: Comma-separated list of status attributes to return
+    - name: admin-qmgr-qmgrName
+      path: /admin/qmgr/{qmgrName}
+      operations:
+      - name: getqueuemanager
+        method: GET
+        description: IBM MQ Get queue manager details
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+        - name: status
+          in: query
+          type: string
+          description: Comma-separated list of status attributes to return
+    authentication:
+      type: apikey
+      key: LtpaToken2
+      value: '{{env.IBM_MQ_API_KEY}}'
+      placement: cookie
+  exposes:
+  - type: rest
+    namespace: admin-rest-queue-managers-rest
+    port: 8080
+    description: REST adapter for IBM MQ Administration REST API — Queue Managers. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/admin/qmgr
+      name: admin-qmgr
+      description: REST surface for admin-qmgr.
+      operations:
+      - method: GET
+        name: listqueuemanagers
+        description: IBM MQ List queue managers
+        call: admin-rest-queue-managers.listqueuemanagers
+        with:
+          name: rest.name
+          attributes: rest.attributes
+          status: rest.status
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/qmgr/{qmgrname}
+      name: admin-qmgr-qmgrname
+      description: REST surface for admin-qmgr-qmgrName.
+      operations:
+      - method: GET
+        name: getqueuemanager
+        description: IBM MQ Get queue manager details
+        call: admin-rest-queue-managers.getqueuemanager
+        with:
+          attributes: rest.attributes
+          status: rest.status
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: admin-rest-queue-managers-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for IBM MQ Administration REST API — Queue Managers. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: ibm-mq-list-queue-managers
+      description: IBM MQ List queue managers
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-rest-queue-managers.listqueuemanagers
+      with:
+        name: tools.name
+        attributes: tools.attributes
+        status: tools.status
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-get-queue-manager
+      description: IBM MQ Get queue manager details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-rest-queue-managers.getqueuemanager
+      with:
+        attributes: tools.attributes
+        status: tools.status
+      outputParameters:
+      - type: object
+        mapping: $.

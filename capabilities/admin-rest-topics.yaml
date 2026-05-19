@@ -1,0 +1,223 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: IBM MQ Administration REST API — Topics
+  description: 'IBM MQ Administration REST API — Topics. 5 operations. Lead operation: IBM MQ List topics. Self-contained
+    Naftiko capability covering one Ibm Mq business surface.'
+  tags:
+  - Ibm Mq
+  - Topics
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    IBM_MQ_API_KEY: IBM_MQ_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: admin-rest-topics
+    baseUri: https://{host}:{port}/ibmmq/rest/v2
+    description: IBM MQ Administration REST API — Topics business capability. Self-contained, no shared references.
+    resources:
+    - name: admin-qmgr-qmgrName-topic
+      path: /admin/qmgr/{qmgrName}/topic
+      operations:
+      - name: listtopics
+        method: GET
+        description: IBM MQ List topics
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: name
+          in: query
+          type: string
+          description: Filter topics by name (supports wildcard *)
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+      - name: createtopic
+        method: POST
+        description: IBM MQ Create a topic
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: admin-qmgr-qmgrName-topic-topicName
+      path: /admin/qmgr/{qmgrName}/topic/{topicName}
+      operations:
+      - name: gettopic
+        method: GET
+        description: IBM MQ Get topic details
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: attributes
+          in: query
+          type: string
+          description: Comma-separated list of attributes to return
+      - name: updatetopic
+        method: PATCH
+        description: IBM MQ Update a topic
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletetopic
+        method: DELETE
+        description: IBM MQ Delete a topic
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: LtpaToken2
+      value: '{{env.IBM_MQ_API_KEY}}'
+      placement: cookie
+  exposes:
+  - type: rest
+    namespace: admin-rest-topics-rest
+    port: 8080
+    description: REST adapter for IBM MQ Administration REST API — Topics. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/admin/qmgr/{qmgrname}/topic
+      name: admin-qmgr-qmgrname-topic
+      description: REST surface for admin-qmgr-qmgrName-topic.
+      operations:
+      - method: GET
+        name: listtopics
+        description: IBM MQ List topics
+        call: admin-rest-topics.listtopics
+        with:
+          name: rest.name
+          attributes: rest.attributes
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createtopic
+        description: IBM MQ Create a topic
+        call: admin-rest-topics.createtopic
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/admin/qmgr/{qmgrname}/topic/{topicname}
+      name: admin-qmgr-qmgrname-topic-topicname
+      description: REST surface for admin-qmgr-qmgrName-topic-topicName.
+      operations:
+      - method: GET
+        name: gettopic
+        description: IBM MQ Get topic details
+        call: admin-rest-topics.gettopic
+        with:
+          attributes: rest.attributes
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updatetopic
+        description: IBM MQ Update a topic
+        call: admin-rest-topics.updatetopic
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletetopic
+        description: IBM MQ Delete a topic
+        call: admin-rest-topics.deletetopic
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: admin-rest-topics-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for IBM MQ Administration REST API — Topics. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: ibm-mq-list-topics
+      description: IBM MQ List topics
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-rest-topics.listtopics
+      with:
+        name: tools.name
+        attributes: tools.attributes
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-create-topic
+      description: IBM MQ Create a topic
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: admin-rest-topics.createtopic
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-get-topic-details
+      description: IBM MQ Get topic details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: admin-rest-topics.gettopic
+      with:
+        attributes: tools.attributes
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-update-topic
+      description: IBM MQ Update a topic
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: admin-rest-topics.updatetopic
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ibm-mq-delete-topic
+      description: IBM MQ Delete a topic
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: admin-rest-topics.deletetopic
+      outputParameters:
+      - type: object
+        mapping: $.
