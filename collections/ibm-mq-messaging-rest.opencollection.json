@@ -1,0 +1,269 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "IBM MQ Messaging REST API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Queue Messaging",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "IBM MQ Receive a message from a queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/ibmmq/rest/v2/messaging/qmgr/:qmgrName/queue/:queueName/message",
+            "headers": [
+              {
+                "name": "ibm-mq-rest-csrf-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "qmgrName",
+                "value": "",
+                "type": "path",
+                "description": "Name of the queue manager"
+              },
+              {
+                "name": "queueName",
+                "value": "",
+                "type": "path",
+                "description": "Name of the queue"
+              },
+              {
+                "name": "correlationId",
+                "value": "",
+                "type": "query",
+                "description": "Filter by correlation ID (hex-encoded)"
+              },
+              {
+                "name": "messageId",
+                "value": "",
+                "type": "query",
+                "description": "Filter by message ID (hex-encoded)"
+              },
+              {
+                "name": "wait",
+                "value": "",
+                "type": "query",
+                "description": "Maximum time in milliseconds to wait for a message"
+              }
+            ]
+          },
+          "docs": "Destructively get a message from the specified queue. The message is removed from the queue and returned in the HTTP response body."
+        },
+        {
+          "info": {
+            "name": "IBM MQ Send a message to a queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/ibmmq/rest/v2/messaging/qmgr/:qmgrName/queue/:queueName/message",
+            "headers": [
+              {
+                "name": "ibm-mq-rest-csrf-token",
+                "value": ""
+              },
+              {
+                "name": "ibm-mq-md-correlationId",
+                "value": ""
+              },
+              {
+                "name": "ibm-mq-md-expiry",
+                "value": ""
+              },
+              {
+                "name": "ibm-mq-md-persistence",
+                "value": ""
+              },
+              {
+                "name": "ibm-mq-md-replyTo",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "qmgrName",
+                "value": "",
+                "type": "path",
+                "description": "Name of the queue manager"
+              },
+              {
+                "name": "queueName",
+                "value": "",
+                "type": "path",
+                "description": "Name of the queue"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Put a message onto the specified queue. The message body is taken from the HTTP request body. Message properties can be set via HTTP headers."
+        },
+        {
+          "info": {
+            "name": "IBM MQ Browse a message on a queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{host}:{port}/ibmmq/rest/v2/messaging/qmgr/:qmgrName/queue/:queueName/message",
+            "headers": [
+              {
+                "name": "ibm-mq-rest-csrf-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "qmgrName",
+                "value": "",
+                "type": "path",
+                "description": "Name of the queue manager"
+              },
+              {
+                "name": "queueName",
+                "value": "",
+                "type": "path",
+                "description": "Name of the queue"
+              },
+              {
+                "name": "correlationId",
+                "value": "",
+                "type": "query",
+                "description": "Filter by correlation ID (hex-encoded)"
+              },
+              {
+                "name": "messageId",
+                "value": "",
+                "type": "query",
+                "description": "Filter by message ID (hex-encoded)"
+              }
+            ]
+          },
+          "docs": "Non-destructively browse a message from the queue. The message remains on the queue after being returned."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Topic Messaging",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "IBM MQ Publish a message to a topic",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/ibmmq/rest/v2/messaging/qmgr/:qmgrName/topic/:topicString/message",
+            "headers": [
+              {
+                "name": "ibm-mq-rest-csrf-token",
+                "value": ""
+              },
+              {
+                "name": "ibm-mq-md-correlationId",
+                "value": ""
+              },
+              {
+                "name": "ibm-mq-md-expiry",
+                "value": ""
+              },
+              {
+                "name": "ibm-mq-md-persistence",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "qmgrName",
+                "value": "",
+                "type": "path",
+                "description": "Name of the queue manager"
+              },
+              {
+                "name": "topicString",
+                "value": "",
+                "type": "path",
+                "description": "The topic string to publish to (URL-encoded)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Publish a message to the specified topic string. All active subscribers to the topic will receive the message."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Login",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "IBM MQ Authenticate and obtain LTPA token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/ibmmq/rest/v2/login",
+            "headers": [
+              {
+                "name": "ibm-mq-rest-csrf-token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Authenticate with the MQ web server and obtain an LTPA token cookie for subsequent requests."
+        },
+        {
+          "info": {
+            "name": "IBM MQ Log out and invalidate token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{host}:{port}/ibmmq/rest/v2/login",
+            "headers": [
+              {
+                "name": "ibm-mq-rest-csrf-token",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Invalidate the current LTPA token and end the session."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
