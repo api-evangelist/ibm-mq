@@ -25,7 +25,7 @@ apis:
     properties:
       - type: Documentation
         url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest
-      - type: openapi
+      - type: OpenAPI
         url: https://www.ibm.com/docs/en/SSFKSJ_9.3.0/com.ibm.mq.dev.doc/rest_api_swagger.json
       - type: OpenAPI
         url: openapi/ibm-mq-admin-rest-openapi.yml
@@ -46,7 +46,7 @@ apis:
     properties:
       - type: Documentation
         url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
-      - type: openapi
+      - type: OpenAPI
         url: https://www.ibm.com/docs/en/SSFKSJ_9.3.0/com.ibm.mq.dev.doc/messaging_rest_api_swagger.json
       - type: OpenAPI
         url: openapi/ibm-mq-messaging-rest-openapi.yml
@@ -65,7 +65,7 @@ apis:
     properties:
       - type: Documentation
         url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=mq-developing-jms-applications
-      - type: sdk
+      - type: SDKs
         url: https://mvnrepository.com/artifact/com.ibm.mq/com.ibm.mq.allclient
       - type: AsyncAPI
         url: asyncapi/ibm-mq-messaging-asyncapi.yml
@@ -91,17 +91,17 @@ apis:
 common:
   - type: GitHubOrganization
     url: https://github.com/ibm-messaging
-  - type: getting-started
+  - type: GettingStarted
     url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=mq-getting-started
   - type: tutorials
     url: https://developer.ibm.com/tutorials/?s=mq
   - type: downloads
     url: https://www.ibm.com/support/pages/downloading-ibm-mq
-  - type: pricing
+  - type: Pricing
     url: https://www.ibm.com/products/mq/pricing
-  - type: support
+  - type: Support
     url: https://www.ibm.com/mysupport
-  - type: blog
+  - type: Blog
     url: >-
       https://community.ibm.com/community/user/integration/communities/community-home?CommunityKey=183ec850-4947-49c8-9a2e-8e7c7fc46c64
   - type: JSONLD

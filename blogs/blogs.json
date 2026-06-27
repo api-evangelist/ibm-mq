@@ -4,11 +4,11 @@
     {
       "source": "https://community.ibm.com/community/user/integration/communities/community-home?CommunityKey=183ec850-4947-49c8-9a2e-8e7c7fc46c64",
       "feed_url": "",
-      "title": "",
-      "saved": 0,
-      "error": "no_feed"
+      "saved": 2,
+      "method": "agent-scrape"
     }
   ],
-  "fetched": "2026-05-17T20:48:52Z",
-  "post_count": 0
+  "fetched": "2026-06-27T12:47:42Z",
+  "post_count": 5,
+  "agent_pulled": "2026-06-27"
 }
