@@ -89,6 +89,12 @@ apis:
         email: support@ibm.com
         url: https://www.ibm.com/mysupport
 common:
+  - type: VulnerabilityDisclosure
+    url: security/ibm-mq-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/ibm-mq-domain-security.yml
+  - type: Authentication
+    url: authentication/ibm-mq-authentication.yml
   - type: GitHubOrganization
     url: https://github.com/ibm-messaging
   - type: GettingStarted

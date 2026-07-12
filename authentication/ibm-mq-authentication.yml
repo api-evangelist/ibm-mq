@@ -1,0 +1,25 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/ibm-mq-admin-rest-openapi.yml, openapi/ibm-mq-messaging-rest-openapi.yml
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - cookie
+schemes:
+- name: basicAuth
+  type: http
+  scheme: basic
+  description: HTTP Basic authentication with MQ user credentials
+  sources:
+  - openapi/ibm-mq-admin-rest-openapi.yml
+  - openapi/ibm-mq-messaging-rest-openapi.yml
+- name: tokenAuth
+  type: apiKey
+  in: cookie
+  parameter: LtpaToken2
+  description: LTPA token-based authentication via login endpoint
+  sources:
+  - openapi/ibm-mq-admin-rest-openapi.yml
+  - openapi/ibm-mq-messaging-rest-openapi.yml
