@@ -89,6 +89,8 @@ apis:
         email: support@ibm.com
         url: https://www.ibm.com/mysupport
 common:
+  - type: AgenticAccess
+    url: agentic-access/ibm-mq-agentic-access.yml
   - type: VulnerabilityDisclosure
     url: security/ibm-mq-vulnerability-disclosure.yml
   - type: DomainSecurity
