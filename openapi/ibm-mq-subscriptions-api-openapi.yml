@@ -1,0 +1,273 @@
+openapi: 3.1.0
+info:
+  title: IBM MQ Administration REST Channels Subscriptions API
+  description: REST API for administering and monitoring IBM MQ queue managers, queues, topics, subscriptions, and channels. Provides programmatic access to manage MQ objects and retrieve status information.
+  version: '2.0'
+  contact:
+    name: IBM Support
+    url: https://www.ibm.com/mysupport
+    email: support@ibm.com
+  license:
+    name: IBM License
+    url: https://www.ibm.com/terms
+servers:
+- url: https://{host}:{port}/ibmmq/rest/v2
+  description: IBM MQ REST API v2
+  variables:
+    host:
+      default: localhost
+      description: Hostname of the MQ web server
+    port:
+      default: '9443'
+      description: HTTPS port of the MQ web server
+security:
+- basicAuth: []
+- tokenAuth: []
+tags:
+- name: Subscriptions
+  description: Manage and query subscription objects
+paths:
+  /admin/qmgr/{qmgrName}/subscription:
+    get:
+      operationId: listSubscriptions
+      summary: IBM MQ List subscriptions
+      description: Retrieve a list of subscriptions defined on a queue manager, with optional filtering by name.
+      tags:
+      - Subscriptions
+      parameters:
+      - $ref: '#/components/parameters/qmgrName'
+      - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      - name: name
+        in: query
+        description: Filter subscriptions by name (supports wildcard *)
+        schema:
+          type: string
+      - name: attributes
+        in: query
+        description: Comma-separated list of attributes to return
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Subscriptions retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscription:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Subscription'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createSubscription
+      summary: IBM MQ Create a subscription
+      description: Create a new durable subscription on the specified queue manager.
+      tags:
+      - Subscriptions
+      parameters:
+      - $ref: '#/components/parameters/qmgrName'
+      - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionCreateRequest'
+      responses:
+        '201':
+          description: Subscription created successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Subscription already exists
+  /admin/qmgr/{qmgrName}/subscription/{subscriptionId}:
+    get:
+      operationId: getSubscription
+      summary: IBM MQ Get subscription details
+      description: Retrieve detailed information about a specific subscription.
+      tags:
+      - Subscriptions
+      parameters:
+      - $ref: '#/components/parameters/qmgrName'
+      - $ref: '#/components/parameters/subscriptionId'
+      - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      - name: attributes
+        in: query
+        description: Comma-separated list of attributes to return
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Subscription details retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subscription:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Subscription'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteSubscription
+      summary: IBM MQ Delete a subscription
+      description: Delete a subscription from the queue manager.
+      tags:
+      - Subscriptions
+      parameters:
+      - $ref: '#/components/parameters/qmgrName'
+      - $ref: '#/components/parameters/subscriptionId'
+      - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      responses:
+        '204':
+          description: Subscription deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication required or credentials invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Requested resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    SubscriptionCreateRequest:
+      type: object
+      required:
+      - name
+      - topicString
+      - general
+      properties:
+        name:
+          type: string
+          description: Name of the subscription
+        topicString:
+          type: string
+          description: Topic string to subscribe to
+        general:
+          type: object
+          required:
+          - destination
+          properties:
+            description:
+              type: string
+            destination:
+              type: string
+              description: Destination queue for messages
+    Subscription:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the subscription
+        name:
+          type: string
+          description: Name of the subscription
+        topicString:
+          type: string
+          description: Topic string that the subscription listens on
+        type:
+          type: string
+          enum:
+          - admin
+          - api
+          description: How the subscription was created
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+              description: Description of the subscription
+            destination:
+              type: string
+              description: Destination queue for messages
+            destinationQueueManager:
+              type: string
+              description: Queue manager hosting the destination
+            durability:
+              type: string
+              enum:
+              - durable
+              - nonDurable
+              description: Whether the subscription persists across restarts
+    Error:
+      type: object
+      properties:
+        error:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: Error type
+              msgId:
+                type: string
+                description: Message identifier
+              explanation:
+                type: string
+                description: Explanation of the error
+              action:
+                type: string
+                description: Suggested action
+  parameters:
+    ibmMqRestCsrfToken:
+      name: ibm-mq-rest-csrf-token
+      in: header
+      required: false
+      description: CSRF token required for state-changing operations
+      schema:
+        type: string
+    subscriptionId:
+      name: subscriptionId
+      in: path
+      required: true
+      description: Subscription identifier
+      schema:
+        type: string
+    qmgrName:
+      name: qmgrName
+      in: path
+      required: true
+      description: Name of the queue manager
+      schema:
+        type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication with MQ user credentials
+    tokenAuth:
+      type: apiKey
+      in: cookie
+      name: LtpaToken2
+      description: LTPA token-based authentication via login endpoint
+externalDocs:
+  description: IBM MQ REST API Documentation
+  url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest

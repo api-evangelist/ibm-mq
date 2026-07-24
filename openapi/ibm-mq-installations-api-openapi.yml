@@ -1,0 +1,117 @@
+openapi: 3.1.0
+info:
+  title: IBM MQ Administration REST Channels Installations API
+  description: REST API for administering and monitoring IBM MQ queue managers, queues, topics, subscriptions, and channels. Provides programmatic access to manage MQ objects and retrieve status information.
+  version: '2.0'
+  contact:
+    name: IBM Support
+    url: https://www.ibm.com/mysupport
+    email: support@ibm.com
+  license:
+    name: IBM License
+    url: https://www.ibm.com/terms
+servers:
+- url: https://{host}:{port}/ibmmq/rest/v2
+  description: IBM MQ REST API v2
+  variables:
+    host:
+      default: localhost
+      description: Hostname of the MQ web server
+    port:
+      default: '9443'
+      description: HTTPS port of the MQ web server
+security:
+- basicAuth: []
+- tokenAuth: []
+tags:
+- name: Installations
+  description: Query MQ installation information
+paths:
+  /admin/installation:
+    get:
+      operationId: listInstallations
+      summary: IBM MQ List MQ installations
+      description: Retrieve a list of IBM MQ installations on the system.
+      tags:
+      - Installations
+      parameters:
+      - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      responses:
+        '200':
+          description: Installations retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  installation:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Installation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  parameters:
+    ibmMqRestCsrfToken:
+      name: ibm-mq-rest-csrf-token
+      in: header
+      required: false
+      description: CSRF token required for state-changing operations
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Authentication required or credentials invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Installation:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the installation
+        version:
+          type: string
+          description: Version of IBM MQ installed
+        path:
+          type: string
+          description: Installation path
+        platform:
+          type: string
+          description: Platform of the installation
+    Error:
+      type: object
+      properties:
+        error:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: Error type
+              msgId:
+                type: string
+                description: Message identifier
+              explanation:
+                type: string
+                description: Explanation of the error
+              action:
+                type: string
+                description: Suggested action
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication with MQ user credentials
+    tokenAuth:
+      type: apiKey
+      in: cookie
+      name: LtpaToken2
+      description: LTPA token-based authentication via login endpoint
+externalDocs:
+  description: IBM MQ REST API Documentation
+  url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest

@@ -1,0 +1,396 @@
+openapi: 3.1.0
+info:
+  title: IBM MQ Administration REST Channels Queues API
+  description: REST API for administering and monitoring IBM MQ queue managers, queues, topics, subscriptions, and channels. Provides programmatic access to manage MQ objects and retrieve status information.
+  version: '2.0'
+  contact:
+    name: IBM Support
+    url: https://www.ibm.com/mysupport
+    email: support@ibm.com
+  license:
+    name: IBM License
+    url: https://www.ibm.com/terms
+servers:
+- url: https://{host}:{port}/ibmmq/rest/v2
+  description: IBM MQ REST API v2
+  variables:
+    host:
+      default: localhost
+      description: Hostname of the MQ web server
+    port:
+      default: '9443'
+      description: HTTPS port of the MQ web server
+security:
+- basicAuth: []
+- tokenAuth: []
+tags:
+- name: Queues
+  description: Manage and query queue objects and status
+paths:
+  /admin/qmgr/{qmgrName}/queue:
+    get:
+      operationId: listQueues
+      summary: IBM MQ List queues
+      description: Retrieve a list of queues defined on a queue manager, with optional filtering by name, type, and attribute selection.
+      tags:
+      - Queues
+      parameters:
+      - $ref: '#/components/parameters/qmgrName'
+      - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      - name: name
+        in: query
+        description: Filter queues by name (supports wildcard *)
+        schema:
+          type: string
+      - name: type
+        in: query
+        description: Filter by queue type
+        schema:
+          type: string
+          enum:
+          - local
+          - alias
+          - remote
+          - model
+          - cluster
+      - name: attributes
+        in: query
+        description: Comma-separated list of attributes to return
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: Comma-separated list of status attributes to return
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Queues retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  queue:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Queue'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createQueue
+      summary: IBM MQ Create a queue
+      description: Create a new queue on the specified queue manager with the given attributes.
+      tags:
+      - Queues
+      parameters:
+      - $ref: '#/components/parameters/qmgrName'
+      - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueueCreateRequest'
+      responses:
+        '201':
+          description: Queue created successfully
+          headers:
+            Location:
+              description: URL of the newly created queue
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          description: Queue already exists
+  /admin/qmgr/{qmgrName}/queue/{queueName}:
+    get:
+      operationId: getQueue
+      summary: IBM MQ Get queue details
+      description: Retrieve detailed information about a specific queue, including configuration attributes and runtime status.
+      tags:
+      - Queues
+      parameters:
+      - $ref: '#/components/parameters/qmgrName'
+      - $ref: '#/components/parameters/queueName'
+      - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      - name: attributes
+        in: query
+        description: Comma-separated list of attributes to return
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: Comma-separated list of status attributes to return
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Queue details retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  queue:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Queue'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateQueue
+      summary: IBM MQ Update a queue
+      description: Modify attributes of an existing queue on the specified queue manager.
+      tags:
+      - Queues
+      parameters:
+      - $ref: '#/components/parameters/qmgrName'
+      - $ref: '#/components/parameters/queueName'
+      - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueueUpdateRequest'
+      responses:
+        '200':
+          description: Queue updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteQueue
+      summary: IBM MQ Delete a queue
+      description: Delete a queue from the specified queue manager. The queue must be empty and have no open handles.
+      tags:
+      - Queues
+      parameters:
+      - $ref: '#/components/parameters/qmgrName'
+      - $ref: '#/components/parameters/queueName'
+      - $ref: '#/components/parameters/ibmMqRestCsrfToken'
+      responses:
+        '204':
+          description: Queue deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication required or credentials invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Requested resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Queue:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the queue
+        type:
+          type: string
+          enum:
+          - local
+          - alias
+          - remote
+          - model
+          - cluster
+          description: Type of the queue
+        general:
+          type: object
+          description: General queue attributes
+          properties:
+            description:
+              type: string
+              description: Description of the queue
+            inhibitPut:
+              type: boolean
+              description: Whether puts are inhibited
+            inhibitGet:
+              type: boolean
+              description: Whether gets are inhibited
+            isTransmissionQueue:
+              type: boolean
+              description: Whether this is a transmission queue
+        extended:
+          type: object
+          description: Extended queue attributes
+          properties:
+            maximumDepth:
+              type: integer
+              description: Maximum number of messages on the queue
+            maximumMessageLength:
+              type: integer
+              description: Maximum message length in bytes
+            backoutThreshold:
+              type: integer
+              description: Backout threshold
+            backoutRequeueQueue:
+              type: string
+              description: Backout requeue queue name
+        storage:
+          type: object
+          description: Storage-related queue attributes
+          properties:
+            defaultPersistence:
+              type: string
+              enum:
+              - persistent
+              - notPersistent
+              description: Default message persistence
+        status:
+          type: object
+          description: Runtime status information
+          properties:
+            currentDepth:
+              type: integer
+              description: Current number of messages on the queue
+            openInputCount:
+              type: integer
+              description: Number of open input handles
+            openOutputCount:
+              type: integer
+              description: Number of open output handles
+            lastPut:
+              type: string
+              format: date-time
+              description: Timestamp of the last put
+            lastGet:
+              type: string
+              format: date-time
+              description: Timestamp of the last get
+    QueueUpdateRequest:
+      type: object
+      properties:
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+            inhibitPut:
+              type: boolean
+            inhibitGet:
+              type: boolean
+        extended:
+          type: object
+          properties:
+            maximumDepth:
+              type: integer
+            maximumMessageLength:
+              type: integer
+    QueueCreateRequest:
+      type: object
+      required:
+      - name
+      - type
+      properties:
+        name:
+          type: string
+          description: Name of the new queue
+        type:
+          type: string
+          enum:
+          - local
+          - alias
+          - remote
+          - model
+          description: Type of queue to create
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+              description: Description of the queue
+        extended:
+          type: object
+          properties:
+            maximumDepth:
+              type: integer
+              description: Maximum number of messages on the queue
+            maximumMessageLength:
+              type: integer
+              description: Maximum message length in bytes
+    Error:
+      type: object
+      properties:
+        error:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: Error type
+              msgId:
+                type: string
+                description: Message identifier
+              explanation:
+                type: string
+                description: Explanation of the error
+              action:
+                type: string
+                description: Suggested action
+  parameters:
+    queueName:
+      name: queueName
+      in: path
+      required: true
+      description: Name of the queue
+      schema:
+        type: string
+    ibmMqRestCsrfToken:
+      name: ibm-mq-rest-csrf-token
+      in: header
+      required: false
+      description: CSRF token required for state-changing operations
+      schema:
+        type: string
+    qmgrName:
+      name: qmgrName
+      in: path
+      required: true
+      description: Name of the queue manager
+      schema:
+        type: string
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: HTTP Basic authentication with MQ user credentials
+    tokenAuth:
+      type: apiKey
+      in: cookie
+      name: LtpaToken2
+      description: LTPA token-based authentication via login endpoint
+externalDocs:
+  description: IBM MQ REST API Documentation
+  url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest
