@@ -1,5 +1,18 @@
 name: IBM MQ
 description: APIs for IBM MQ messaging middleware for enterprise integration.
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 image: https://www.ibm.com/brand/experience-guides/developer/8f4e3cc842d31b9a55e57cb2b0e49605/02_8-bar-positive.svg
 tags:
   - Async
@@ -13,81 +26,168 @@ modified: '2026-05-19'
 url: https://www.ibm.com/products/mq
 specificationVersion: '0.18'
 apis:
-  - name: IBM MQ REST API
-    description: REST API for managing and monitoring IBM MQ queue managers, queues, topics, and channels.
-    image: https://www.ibm.com/brand/experience-guides/developer/8f4e3cc842d31b9a55e57cb2b0e49605/02_8-bar-positive.svg
-    humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest-overview
-    baseURL: https://{host}:{port}/ibmmq/rest/v2
-    tags:
-      - Admin
-      - Messaging
-      - Rest
-    properties:
-      - type: Documentation
-        url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest
-      - type: OpenAPI
-        url: https://www.ibm.com/docs/en/SSFKSJ_9.3.0/com.ibm.mq.dev.doc/rest_api_swagger.json
-      - type: OpenAPI
-        url: openapi/ibm-mq-admin-rest-openapi.yml
-    contact:
-      - FN: IBM Support
-        email: support@ibm.com
-        url: https://www.ibm.com/mysupport
-  - name: IBM MQ Messaging REST API
-    description: REST API for sending and receiving messages via HTTP.
-    image: https://www.ibm.com/brand/experience-guides/developer/8f4e3cc842d31b9a55e57cb2b0e49605/02_8-bar-positive.svg
-    humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
-    baseURL: https://{host}:{port}/ibmmq/rest/v2/messaging
-    tags:
-      - Consumer
-      - Messaging
-      - Producer
-      - Rest
-    properties:
-      - type: Documentation
-        url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
-      - type: OpenAPI
-        url: https://www.ibm.com/docs/en/SSFKSJ_9.3.0/com.ibm.mq.dev.doc/messaging_rest_api_swagger.json
-      - type: OpenAPI
-        url: openapi/ibm-mq-messaging-rest-openapi.yml
-    contact:
-      - FN: IBM Support
-        email: support@ibm.com
-        url: https://www.ibm.com/mysupport
-  - name: IBM MQ JMS API
-    description: Java Message Service API for IBM MQ.
-    image: https://www.ibm.com/brand/experience-guides/developer/8f4e3cc842d31b9a55e57cb2b0e49605/02_8-bar-positive.svg
-    humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-jms
-    tags:
-      - Java
-      - Jms
-      - Messaging
-    properties:
-      - type: Documentation
-        url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=mq-developing-jms-applications
-      - type: SDKs
-        url: https://mvnrepository.com/artifact/com.ibm.mq/com.ibm.mq.allclient
-      - type: AsyncAPI
-        url: asyncapi/ibm-mq-messaging-asyncapi.yml
-    contact:
-      - FN: IBM Support
-        email: support@ibm.com
-        url: https://www.ibm.com/mysupport
-  - name: IBM MQ Native API
-    description: Native procedural API for IBM MQ (MQI).
-    image: https://www.ibm.com/brand/experience-guides/developer/8f4e3cc842d31b9a55e57cb2b0e49605/02_8-bar-positive.svg
-    humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=reference-mqi
-    tags:
-      - Mqi
-      - Native
-      - Procedural
-    properties:
-      - type: Documentation
-        url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=programming-mqi
-    contact:
-      - FN: IBM Support
-        email: support@ibm.com
-        url: https://www.ibm.com/mysupport
+- name: IBM MQ JMS API
+  description: Java Message Service API for IBM MQ.
+  image: >-
+    https://www.ibm.com/brand/experience-guides/developer/8f4e3cc842d31b9a55e57cb2b0e49605/02_8-bar-positive.svg
+  humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-jms
+  tags:
+  - Java
+  - Jms
+  - Messaging
+  properties:
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=mq-developing-jms-applications
+  - type: SDKs
+    url: https://mvnrepository.com/artifact/com.ibm.mq/com.ibm.mq.allclient
+  - type: AsyncAPI
+    url: asyncapi/ibm-mq-messaging-asyncapi.yml
+  contact:
+  - FN: IBM Support
+    email: support@ibm.com
+    url: https://www.ibm.com/mysupport
+- name: IBM MQ Native API
+  description: Native procedural API for IBM MQ (MQI).
+  image: >-
+    https://www.ibm.com/brand/experience-guides/developer/8f4e3cc842d31b9a55e57cb2b0e49605/02_8-bar-positive.svg
+  humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=reference-mqi
+  tags:
+  - Mqi
+  - Native
+  - Procedural
+  properties:
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=programming-mqi
+  contact:
+  - FN: IBM Support
+    email: support@ibm.com
+    url: https://www.ibm.com/mysupport
+- aid: ibm-mq:ibm-mq-channels-api
+  name: IBM MQ Channels API
+  description: Manage and query channel objects and status
+  humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest-overview
+  baseURL: https://{host}:{port}/ibmmq/rest/v2
+  tags:
+  - Channels
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-mq-channels-api-openapi.yml
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
+- aid: ibm-mq:ibm-mq-installations-api
+  name: IBM MQ Installations API
+  description: Query MQ installation information
+  humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest-overview
+  baseURL: https://{host}:{port}/ibmmq/rest/v2
+  tags:
+  - Installations
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-mq-installations-api-openapi.yml
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
+- aid: ibm-mq:ibm-mq-login-api
+  name: IBM MQ Login API
+  description: Authentication token management
+  humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest-overview
+  baseURL: https://{host}:{port}/ibmmq/rest/v2
+  tags:
+  - Login
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-mq-login-api-openapi.yml
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
+- aid: ibm-mq:ibm-mq-queue-managers-api
+  name: IBM MQ Queue Managers API
+  description: Manage and query queue manager objects and status
+  humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest-overview
+  baseURL: https://{host}:{port}/ibmmq/rest/v2
+  tags:
+  - Queue Managers
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-mq-queue-managers-api-openapi.yml
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
+- aid: ibm-mq:ibm-mq-queue-messaging-api
+  name: IBM MQ Queue Messaging API
+  description: Send and receive messages on queues
+  humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest-overview
+  baseURL: https://{host}:{port}/ibmmq/rest/v2
+  tags:
+  - Queue Messaging
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-mq-queue-messaging-api-openapi.yml
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
+- aid: ibm-mq:ibm-mq-queues-api
+  name: IBM MQ Queues API
+  description: Manage and query queue objects and status
+  humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest-overview
+  baseURL: https://{host}:{port}/ibmmq/rest/v2
+  tags:
+  - Queues
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-mq-queues-api-openapi.yml
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
+- aid: ibm-mq:ibm-mq-subscriptions-api
+  name: IBM MQ Subscriptions API
+  description: Manage and query subscription objects
+  humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest-overview
+  baseURL: https://{host}:{port}/ibmmq/rest/v2
+  tags:
+  - Subscriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-mq-subscriptions-api-openapi.yml
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
+- aid: ibm-mq:ibm-mq-topic-messaging-api
+  name: IBM MQ Topic Messaging API
+  description: Publish messages to topics
+  humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest-overview
+  baseURL: https://{host}:{port}/ibmmq/rest/v2
+  tags:
+  - Topic Messaging
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-mq-topic-messaging-api-openapi.yml
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
+- aid: ibm-mq:ibm-mq-topics-api
+  name: IBM MQ Topics API
+  description: Manage and query topic objects
+  humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest-overview
+  baseURL: https://{host}:{port}/ibmmq/rest/v2
+  tags:
+  - Topics
+  properties:
+  - type: OpenAPI
+    url: openapi/ibm-mq-topics-api-openapi.yml
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest
+  - type: Documentation
+    url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
 common:
   - type: AgenticAccess
     url: agentic-access/ibm-mq-agentic-access.yml
