@@ -1,0 +1,30 @@
+{
+  "provider": "ibm-mq",
+  "sources": [
+    "ibm-mq-channels-api-openapi.yml",
+    "ibm-mq-installations-api-openapi.yml",
+    "ibm-mq-login-api-openapi.yml",
+    "ibm-mq-queue-managers-api-openapi.yml",
+    "ibm-mq-queue-messaging-api-openapi.yml",
+    "ibm-mq-queues-api-openapi.yml",
+    "ibm-mq-subscriptions-api-openapi.yml",
+    "ibm-mq-topic-messaging-api-openapi.yml",
+    "ibm-mq-topics-api-openapi.yml"
+  ],
+  "outputs": [
+    "ibm-mq-channels-api-openapi.yml",
+    "ibm-mq-installations-api-openapi.yml",
+    "ibm-mq-login-api-openapi.yml",
+    "ibm-mq-queue-managers-api-openapi.yml",
+    "ibm-mq-queue-messaging-api-openapi.yml",
+    "ibm-mq-queues-api-openapi.yml",
+    "ibm-mq-subscriptions-api-openapi.yml",
+    "ibm-mq-topic-messaging-api-openapi.yml",
+    "ibm-mq-topics-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
