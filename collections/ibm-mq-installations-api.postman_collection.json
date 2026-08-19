@@ -1,0 +1,244 @@
+{
+  "item": [
+    {
+      "id": "3f7451a3-70d1-4255-b38a-bbb9766c8ad7",
+      "name": "Installations",
+      "description": {
+        "content": "Query MQ installation information",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "55b387f7-e7b5-4f3e-970b-c890207aa261",
+          "name": "IBM MQ List MQ installations",
+          "request": {
+            "name": "IBM MQ List MQ installations",
+            "description": {
+              "content": "Retrieve a list of IBM MQ installations on the system.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "admin",
+                "installation"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Hostname of the MQ web server",
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                },
+                {
+                  "description": "HTTPS port of the MQ web server",
+                  "type": "any",
+                  "value": "{{port}}",
+                  "key": "port"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "CSRF token required for state-changing operations",
+                "key": "ibm-mq-rest-csrf-token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a8a000fa-ec1e-4e9f-840a-61eaf75ddd72",
+              "name": "Installations retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "installation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"installation\": [\n    {\n      \"name\": \"string\",\n      \"version\": \"string\",\n      \"path\": \"string\",\n      \"platform\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"version\": \"string\",\n      \"path\": \"string\",\n      \"platform\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "60a718e8-074c-4232-91ec-80916a08a7b8",
+              "name": "Authentication required or credentials invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "installation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": [\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    },\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Hostname of the MQ web server",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost",
+      "key": "host"
+    },
+    {
+      "description": {
+        "content": "HTTPS port of the MQ web server",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "9443",
+      "key": "port"
+    },
+    {
+      "type": "string",
+      "value": "https://{{host}}:{{port}}/ibmmq/rest/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a9e36b36-2cf5-483b-b7a9-c3dc50036161",
+    "name": "IBM MQ Administration REST Channels Installations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "REST API for administering and monitoring IBM MQ queue managers, queues, topics, subscriptions, and channels. Provides programmatic access to manage MQ objects and retrieve status information.\n\nContact Support:\n Name: IBM Support\n Email: support@ibm.com",
+      "type": "text/plain"
+    }
+  }
+}

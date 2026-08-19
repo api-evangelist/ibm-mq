@@ -1,0 +1,63 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "IBM MQ Administration REST Channels Login API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Login",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "IBM MQ Authenticate and obtain LTPA token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/ibmmq/rest/v2/login",
+            "headers": [
+              {
+                "name": "ibm-mq-rest-csrf-token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Authenticate with the MQ web server and obtain an LTPA token cookie for subsequent requests."
+        },
+        {
+          "info": {
+            "name": "IBM MQ Log out and invalidate token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{host}:{port}/ibmmq/rest/v2/login",
+            "headers": [
+              {
+                "name": "ibm-mq-rest-csrf-token",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Invalidate the current LTPA token and end the session."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

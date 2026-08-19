@@ -1,0 +1,1996 @@
+{
+  "item": [
+    {
+      "id": "145f79dd-8f8d-46b1-ab66-bfc8df776b23",
+      "name": "Queues",
+      "description": {
+        "content": "Manage and query queue objects and status",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "47acb27f-5709-4430-8143-cd01fd75f1ba",
+          "name": "IBM MQ List queues",
+          "request": {
+            "name": "IBM MQ List queues",
+            "description": {
+              "content": "Retrieve a list of queues defined on a queue manager, with optional filtering by name, type, and attribute selection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "admin",
+                "qmgr",
+                ":qmgrName",
+                "queue"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Filter queues by name (supports wildcard *)"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Filter by queue type"
+                },
+                {
+                  "disabled": false,
+                  "key": "attributes",
+                  "value": "<string>",
+                  "description": "Comma-separated list of attributes to return"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Comma-separated list of status attributes to return"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "qmgrName",
+                  "description": "(Required) Name of the queue manager"
+                },
+                {
+                  "description": "Hostname of the MQ web server",
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                },
+                {
+                  "description": "HTTPS port of the MQ web server",
+                  "type": "any",
+                  "value": "{{port}}",
+                  "key": "port"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "CSRF token required for state-changing operations",
+                "key": "ibm-mq-rest-csrf-token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6004d33d-fce5-4139-bfd5-8153a35e2967",
+              "name": "Queues retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "attributes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"queue\": [\n    {\n      \"name\": \"string\",\n      \"type\": \"local\",\n      \"general\": {\n        \"description\": \"string\",\n        \"inhibitPut\": true,\n        \"inhibitGet\": true,\n        \"isTransmissionQueue\": false\n      },\n      \"extended\": {\n        \"maximumDepth\": 5536,\n        \"maximumMessageLength\": 4434,\n        \"backoutThreshold\": 5104,\n        \"backoutRequeueQueue\": \"string\"\n      },\n      \"storage\": {\n        \"defaultPersistence\": \"persistent\"\n      },\n      \"status\": {\n        \"currentDepth\": 8935,\n        \"openInputCount\": 3189,\n        \"openOutputCount\": 8229,\n        \"lastPut\": \"2017-08-05T22:33:34.173Z\",\n        \"lastGet\": \"1965-03-05T19:40:04.138Z\"\n      }\n    },\n    {\n      \"name\": \"string\",\n      \"type\": \"model\",\n      \"general\": {\n        \"description\": \"string\",\n        \"inhibitPut\": true,\n        \"inhibitGet\": true,\n        \"isTransmissionQueue\": true\n      },\n      \"extended\": {\n        \"maximumDepth\": 2094,\n        \"maximumMessageLength\": 1898,\n        \"backoutThreshold\": 8368,\n        \"backoutRequeueQueue\": \"string\"\n      },\n      \"storage\": {\n        \"defaultPersistence\": \"persistent\"\n      },\n      \"status\": {\n        \"currentDepth\": 8704,\n        \"openInputCount\": 7035,\n        \"openOutputCount\": 9052,\n        \"lastPut\": \"2008-03-11T06:05:26.619Z\",\n        \"lastGet\": \"1971-10-23T04:44:05.288Z\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2d2d68ba-5a54-4f59-8924-a15f53849d09",
+              "name": "Invalid request parameters or body",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "attributes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": [\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    },\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a19a40eb-da03-4314-9d27-a741bde8388a",
+              "name": "Authentication required or credentials invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "attributes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": [\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    },\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5f538736-c9d6-4019-acee-6d12591ddd77",
+              "name": "Requested resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "attributes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": [\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    },\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e30b35d1-17d4-4280-89e8-57b817013632",
+          "name": "IBM MQ Create a queue",
+          "request": {
+            "name": "IBM MQ Create a queue",
+            "description": {
+              "content": "Create a new queue on the specified queue manager with the given attributes.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "admin",
+                "qmgr",
+                ":qmgrName",
+                "queue"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "qmgrName",
+                  "description": "(Required) Name of the queue manager"
+                },
+                {
+                  "description": "Hostname of the MQ web server",
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                },
+                {
+                  "description": "HTTPS port of the MQ web server",
+                  "type": "any",
+                  "value": "{{port}}",
+                  "key": "port"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "CSRF token required for state-changing operations",
+                "key": "ibm-mq-rest-csrf-token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"general\": {\n    \"description\": \"<string>\"\n  },\n  \"extended\": {\n    \"maximumDepth\": \"<integer>\",\n    \"maximumMessageLength\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "841fdd0e-9bf3-4377-af9d-1b56ec2e2fbb",
+              "name": "Queue created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"general\": {\n    \"description\": \"<string>\"\n  },\n  \"extended\": {\n    \"maximumDepth\": \"<integer>\",\n    \"maximumMessageLength\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "URL of the newly created queue",
+                  "key": "Location",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cfb22471-69af-4763-95f6-04451782434a",
+              "name": "Invalid request parameters or body",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"general\": {\n    \"description\": \"<string>\"\n  },\n  \"extended\": {\n    \"maximumDepth\": \"<integer>\",\n    \"maximumMessageLength\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": [\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    },\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2654ac21-2184-4de4-b106-c6de0b77d4bb",
+              "name": "Authentication required or credentials invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"general\": {\n    \"description\": \"<string>\"\n  },\n  \"extended\": {\n    \"maximumDepth\": \"<integer>\",\n    \"maximumMessageLength\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": [\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    },\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "527081ac-8d4c-4cd0-8f23-431ee901b5fe",
+              "name": "Queue already exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"type\": \"<string>\",\n  \"general\": {\n    \"description\": \"<string>\"\n  },\n  \"extended\": {\n    \"maximumDepth\": \"<integer>\",\n    \"maximumMessageLength\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3e31fd95-7c38-4634-90b8-094f71b824ab",
+          "name": "IBM MQ Get queue details",
+          "request": {
+            "name": "IBM MQ Get queue details",
+            "description": {
+              "content": "Retrieve detailed information about a specific queue, including configuration attributes and runtime status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "admin",
+                "qmgr",
+                ":qmgrName",
+                "queue",
+                ":queueName"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "attributes",
+                  "value": "<string>",
+                  "description": "Comma-separated list of attributes to return"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Comma-separated list of status attributes to return"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "qmgrName",
+                  "description": "(Required) Name of the queue manager"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "queueName",
+                  "description": "(Required) Name of the queue"
+                },
+                {
+                  "description": "Hostname of the MQ web server",
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                },
+                {
+                  "description": "HTTPS port of the MQ web server",
+                  "type": "any",
+                  "value": "{{port}}",
+                  "key": "port"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "CSRF token required for state-changing operations",
+                "key": "ibm-mq-rest-csrf-token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "95da164c-f8dd-4c02-a1cc-769291fc0330",
+              "name": "Queue details retrieved",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue",
+                    ":queueName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "attributes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "queueName",
+                      "description": "(Required) Name of the queue"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"queue\": [\n    {\n      \"name\": \"string\",\n      \"type\": \"local\",\n      \"general\": {\n        \"description\": \"string\",\n        \"inhibitPut\": true,\n        \"inhibitGet\": true,\n        \"isTransmissionQueue\": false\n      },\n      \"extended\": {\n        \"maximumDepth\": 5536,\n        \"maximumMessageLength\": 4434,\n        \"backoutThreshold\": 5104,\n        \"backoutRequeueQueue\": \"string\"\n      },\n      \"storage\": {\n        \"defaultPersistence\": \"persistent\"\n      },\n      \"status\": {\n        \"currentDepth\": 8935,\n        \"openInputCount\": 3189,\n        \"openOutputCount\": 8229,\n        \"lastPut\": \"2017-08-05T22:33:34.173Z\",\n        \"lastGet\": \"1965-03-05T19:40:04.138Z\"\n      }\n    },\n    {\n      \"name\": \"string\",\n      \"type\": \"model\",\n      \"general\": {\n        \"description\": \"string\",\n        \"inhibitPut\": true,\n        \"inhibitGet\": true,\n        \"isTransmissionQueue\": true\n      },\n      \"extended\": {\n        \"maximumDepth\": 2094,\n        \"maximumMessageLength\": 1898,\n        \"backoutThreshold\": 8368,\n        \"backoutRequeueQueue\": \"string\"\n      },\n      \"storage\": {\n        \"defaultPersistence\": \"persistent\"\n      },\n      \"status\": {\n        \"currentDepth\": 8704,\n        \"openInputCount\": 7035,\n        \"openOutputCount\": 9052,\n        \"lastPut\": \"2008-03-11T06:05:26.619Z\",\n        \"lastGet\": \"1971-10-23T04:44:05.288Z\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "479a0008-bdac-45dc-a17c-c18e00d61bf8",
+              "name": "Authentication required or credentials invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue",
+                    ":queueName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "attributes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "queueName",
+                      "description": "(Required) Name of the queue"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": [\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    },\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b273a830-2708-4e8e-95d5-f7116aafa4bd",
+              "name": "Requested resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue",
+                    ":queueName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "attributes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "queueName",
+                      "description": "(Required) Name of the queue"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": [\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    },\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9041cffd-fdcf-4036-a540-d81c1be905ea",
+          "name": "IBM MQ Update a queue",
+          "request": {
+            "name": "IBM MQ Update a queue",
+            "description": {
+              "content": "Modify attributes of an existing queue on the specified queue manager.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "admin",
+                "qmgr",
+                ":qmgrName",
+                "queue",
+                ":queueName"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "qmgrName",
+                  "description": "(Required) Name of the queue manager"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "queueName",
+                  "description": "(Required) Name of the queue"
+                },
+                {
+                  "description": "Hostname of the MQ web server",
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                },
+                {
+                  "description": "HTTPS port of the MQ web server",
+                  "type": "any",
+                  "value": "{{port}}",
+                  "key": "port"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "CSRF token required for state-changing operations",
+                "key": "ibm-mq-rest-csrf-token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"general\": {\n    \"description\": \"<string>\",\n    \"inhibitPut\": \"<boolean>\",\n    \"inhibitGet\": \"<boolean>\"\n  },\n  \"extended\": {\n    \"maximumDepth\": \"<integer>\",\n    \"maximumMessageLength\": \"<integer>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2796b220-1b38-433a-a4c9-10e3e1808b25",
+              "name": "Queue updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue",
+                    ":queueName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "queueName",
+                      "description": "(Required) Name of the queue"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"general\": {\n    \"description\": \"<string>\",\n    \"inhibitPut\": \"<boolean>\",\n    \"inhibitGet\": \"<boolean>\"\n  },\n  \"extended\": {\n    \"maximumDepth\": \"<integer>\",\n    \"maximumMessageLength\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c583e36d-88be-43f3-8732-1553eeba51cd",
+              "name": "Invalid request parameters or body",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue",
+                    ":queueName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "queueName",
+                      "description": "(Required) Name of the queue"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"general\": {\n    \"description\": \"<string>\",\n    \"inhibitPut\": \"<boolean>\",\n    \"inhibitGet\": \"<boolean>\"\n  },\n  \"extended\": {\n    \"maximumDepth\": \"<integer>\",\n    \"maximumMessageLength\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": [\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    },\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d4c1fd06-a9b7-41d2-8023-a556ed5fe3e2",
+              "name": "Authentication required or credentials invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue",
+                    ":queueName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "queueName",
+                      "description": "(Required) Name of the queue"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"general\": {\n    \"description\": \"<string>\",\n    \"inhibitPut\": \"<boolean>\",\n    \"inhibitGet\": \"<boolean>\"\n  },\n  \"extended\": {\n    \"maximumDepth\": \"<integer>\",\n    \"maximumMessageLength\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": [\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    },\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "03e517e6-d47c-4274-ab9f-c1327e611f21",
+              "name": "Requested resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue",
+                    ":queueName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "queueName",
+                      "description": "(Required) Name of the queue"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"general\": {\n    \"description\": \"<string>\",\n    \"inhibitPut\": \"<boolean>\",\n    \"inhibitGet\": \"<boolean>\"\n  },\n  \"extended\": {\n    \"maximumDepth\": \"<integer>\",\n    \"maximumMessageLength\": \"<integer>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": [\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    },\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7a0edee5-ee0d-4792-a738-b99647e9f85b",
+          "name": "IBM MQ Delete a queue",
+          "request": {
+            "name": "IBM MQ Delete a queue",
+            "description": {
+              "content": "Delete a queue from the specified queue manager. The queue must be empty and have no open handles.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "admin",
+                "qmgr",
+                ":qmgrName",
+                "queue",
+                ":queueName"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "qmgrName",
+                  "description": "(Required) Name of the queue manager"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "queueName",
+                  "description": "(Required) Name of the queue"
+                },
+                {
+                  "description": "Hostname of the MQ web server",
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                },
+                {
+                  "description": "HTTPS port of the MQ web server",
+                  "type": "any",
+                  "value": "{{port}}",
+                  "key": "port"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "CSRF token required for state-changing operations",
+                "key": "ibm-mq-rest-csrf-token",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ee762b62-15b4-49e5-b4b6-49997d4ec4e5",
+              "name": "Queue deleted successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue",
+                    ":queueName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "queueName",
+                      "description": "(Required) Name of the queue"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "752cea66-7f2d-440b-8647-279cc751e22b",
+              "name": "Authentication required or credentials invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue",
+                    ":queueName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "queueName",
+                      "description": "(Required) Name of the queue"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": [\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    },\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7a33d573-186a-4f0a-bf32-ef6dfb0efb64",
+              "name": "Requested resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "admin",
+                    "qmgr",
+                    ":qmgrName",
+                    "queue",
+                    ":queueName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "qmgrName",
+                      "description": "(Required) Name of the queue manager"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "queueName",
+                      "description": "(Required) Name of the queue"
+                    },
+                    {
+                      "description": "Hostname of the MQ web server",
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    },
+                    {
+                      "description": "HTTPS port of the MQ web server",
+                      "type": "any",
+                      "value": "{{port}}",
+                      "key": "port"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: basic",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "CSRF token required for state-changing operations",
+                    "key": "ibm-mq-rest-csrf-token",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": [\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    },\n    {\n      \"type\": \"string\",\n      \"msgId\": \"string\",\n      \"explanation\": \"string\",\n      \"action\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Hostname of the MQ web server",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "localhost",
+      "key": "host"
+    },
+    {
+      "description": {
+        "content": "HTTPS port of the MQ web server",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "9443",
+      "key": "port"
+    },
+    {
+      "type": "string",
+      "value": "https://{{host}}:{{port}}/ibmmq/rest/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "6b4ea312-e26a-499f-8aaf-cd028b1688a9",
+    "name": "IBM MQ Administration REST Channels Queues API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "REST API for administering and monitoring IBM MQ queue managers, queues, topics, subscriptions, and channels. Provides programmatic access to manage MQ objects and retrieve status information.\n\nContact Support:\n Name: IBM Support\n Email: support@ibm.com",
+      "type": "text/plain"
+    }
+  }
+}

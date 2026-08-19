@@ -1,0 +1,72 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "IBM MQ Administration REST Channels Topic Messaging API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Topic Messaging",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "IBM MQ Publish a message to a topic",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/ibmmq/rest/v2/messaging/qmgr/:qmgrName/topic/:topicString/message",
+            "headers": [
+              {
+                "name": "ibm-mq-rest-csrf-token",
+                "value": ""
+              },
+              {
+                "name": "ibm-mq-md-correlationId",
+                "value": ""
+              },
+              {
+                "name": "ibm-mq-md-expiry",
+                "value": ""
+              },
+              {
+                "name": "ibm-mq-md-persistence",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "qmgrName",
+                "value": "",
+                "type": "path",
+                "description": "Name of the queue manager"
+              },
+              {
+                "name": "topicString",
+                "value": "",
+                "type": "path",
+                "description": "The topic string to publish to (URL-encoded)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Publish a message to the specified topic string. All active subscribers to the topic will receive the message."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

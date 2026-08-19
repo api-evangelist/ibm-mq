@@ -1,0 +1,99 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "IBM MQ Administration REST Channels Queue Managers API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Queue Managers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "IBM MQ List queue managers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/ibmmq/rest/v2/admin/qmgr",
+            "headers": [
+              {
+                "name": "ibm-mq-rest-csrf-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Filter queue managers by name (supports wildcard *)"
+              },
+              {
+                "name": "attributes",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of attributes to return"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of status attributes to return"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of queue managers accessible from the MQ web server, with optional filtering by name and attribute selection."
+        },
+        {
+          "info": {
+            "name": "IBM MQ Get queue manager details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/ibmmq/rest/v2/admin/qmgr/:qmgrName",
+            "headers": [
+              {
+                "name": "ibm-mq-rest-csrf-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "qmgrName",
+                "value": "",
+                "type": "path",
+                "description": "Name of the queue manager"
+              },
+              {
+                "name": "attributes",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of attributes to return"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of status attributes to return"
+              }
+            ]
+          },
+          "docs": "Retrieve detailed information about a specific queue manager, including configuration attributes and runtime status."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

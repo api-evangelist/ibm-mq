@@ -1,0 +1,42 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "IBM MQ Administration REST Channels Installations API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Installations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "IBM MQ List MQ installations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/ibmmq/rest/v2/admin/installation",
+            "headers": [
+              {
+                "name": "ibm-mq-rest-csrf-token",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Retrieve a list of IBM MQ installations on the system."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
