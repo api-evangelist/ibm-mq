@@ -33,6 +33,10 @@ apis:
   humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-jms
   tags:
   - Java
+  - JMS
+  - Messaging
+  tags_raw:
+  - Java
   - Jms
   - Messaging
   properties:
@@ -152,6 +156,8 @@ apis:
   humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest-overview
   baseURL: https://{host}:{port}/ibmmq/rest/v2
   tags:
+  - Subscription
+  tags_raw:
   - Subscriptions
   properties:
   - type: OpenAPI
