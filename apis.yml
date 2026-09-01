@@ -45,7 +45,7 @@ apis:
   humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-jms
   tags:
   - Java
-  - Jms
+  - JMS
   - Messaging
   tags_raw:
   - Java
