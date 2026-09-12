@@ -208,6 +208,8 @@ apis:
   - type: Documentation
     url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
 common:
+  - type: Website
+    url: https://www.ibm.com/
   - type: AgenticAccess
     url: agentic-access/ibm-mq-agentic-access.yml
   - type: VulnerabilityDisclosure
