@@ -33,6 +33,13 @@ tags:
   - Integration
   - Messaging
   - Middleware
+  - Queues
+tags_raw:
+  - Async
+  - Enterprise
+  - Integration
+  - Messaging
+  - Middleware
   - Queue
 created: '2024-01-20'
 modified: '2026-05-19'
@@ -199,6 +206,8 @@ apis:
   humanURL: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest-overview
   baseURL: https://{host}:{port}/ibmmq/rest/v2
   tags:
+  - Topic
+  tags_raw:
   - Topics
   properties:
   - type: OpenAPI
