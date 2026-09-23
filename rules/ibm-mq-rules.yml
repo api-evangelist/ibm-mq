@@ -1,9 +1,9 @@
-aid: ibm-mq:ibm-mq-rules
-name: IBM MQ Rules
+x-aid: ibm-mq:ibm-mq-rules
+x-name: IBM MQ Rules
 description: >-
   Governance and operational rules for the IBM MQ API artifacts maintained in
   this repository.
-tags:
+x-tags:
   - Governance
   - Rules
   - IBM
@@ -38,6 +38,6 @@ rules:
       The apis.yml index in this repository must reference all OpenAPI,
       AsyncAPI, and JSON Schema files under their respective directories and
       be updated when artifacts change.
-maintainers:
+x-maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

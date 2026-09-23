@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: IBM MQ Administration REST Channels Subscriptions API
+  title: IBM MQ Administration REST Subscriptions API
   description: REST API for administering and monitoring IBM MQ queue managers, queues, topics, subscriptions, and channels. Provides programmatic access to manage MQ objects and retrieve status information.
   version: '2.0'
   contact:
@@ -137,6 +137,28 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  parameters:
+    qmgrName:
+      name: qmgrName
+      in: path
+      required: true
+      description: Name of the queue manager
+      schema:
+        type: string
+    subscriptionId:
+      name: subscriptionId
+      in: path
+      required: true
+      description: Subscription identifier
+      schema:
+        type: string
+    ibmMqRestCsrfToken:
+      name: ibm-mq-rest-csrf-token
+      in: header
+      required: false
+      description: CSRF token required for state-changing operations
+      schema:
+        type: string
   responses:
     Unauthorized:
       description: Authentication required or credentials invalid
@@ -157,29 +179,6 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    SubscriptionCreateRequest:
-      type: object
-      required:
-      - name
-      - topicString
-      - general
-      properties:
-        name:
-          type: string
-          description: Name of the subscription
-        topicString:
-          type: string
-          description: Topic string to subscribe to
-        general:
-          type: object
-          required:
-          - destination
-          properties:
-            description:
-              type: string
-            destination:
-              type: string
-              description: Destination queue for messages
     Subscription:
       type: object
       properties:
@@ -236,28 +235,29 @@ components:
               action:
                 type: string
                 description: Suggested action
-  parameters:
-    ibmMqRestCsrfToken:
-      name: ibm-mq-rest-csrf-token
-      in: header
-      required: false
-      description: CSRF token required for state-changing operations
-      schema:
-        type: string
-    subscriptionId:
-      name: subscriptionId
-      in: path
-      required: true
-      description: Subscription identifier
-      schema:
-        type: string
-    qmgrName:
-      name: qmgrName
-      in: path
-      required: true
-      description: Name of the queue manager
-      schema:
-        type: string
+    SubscriptionCreateRequest:
+      type: object
+      required:
+      - name
+      - topicString
+      - general
+      properties:
+        name:
+          type: string
+          description: Name of the subscription
+        topicString:
+          type: string
+          description: Topic string to subscribe to
+        general:
+          type: object
+          required:
+          - destination
+          properties:
+            description:
+              type: string
+            destination:
+              type: string
+              description: Destination queue for messages
   securitySchemes:
     basicAuth:
       type: http

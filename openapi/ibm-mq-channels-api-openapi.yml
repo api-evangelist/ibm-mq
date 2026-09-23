@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: IBM MQ Administration REST Channels API
   description: REST API for administering and monitoring IBM MQ queue managers, queues, topics, subscriptions, and channels. Provides programmatic access to manage MQ objects and retrieve status information.
@@ -187,7 +187,78 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  parameters:
+    qmgrName:
+      name: qmgrName
+      in: path
+      required: true
+      description: Name of the queue manager
+      schema:
+        type: string
+    channelName:
+      name: channelName
+      in: path
+      required: true
+      description: Name of the channel
+      schema:
+        type: string
+    ibmMqRestCsrfToken:
+      name: ibm-mq-rest-csrf-token
+      in: header
+      required: false
+      description: CSRF token required for state-changing operations
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Authentication required or credentials invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Requested resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    ChannelUpdateRequest:
+      type: object
+      properties:
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+            connectionName:
+              type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: Error type
+              msgId:
+                type: string
+                description: Message identifier
+              explanation:
+                type: string
+                description: Explanation of the error
+              action:
+                type: string
+                description: Suggested action
     ChannelCreateRequest:
       type: object
       required:
@@ -218,16 +289,6 @@ components:
             connectionName:
               type: string
             transmissionQueue:
-              type: string
-    ChannelUpdateRequest:
-      type: object
-      properties:
-        general:
-          type: object
-          properties:
-            description:
-              type: string
-            connectionName:
               type: string
     Channel:
       type: object
@@ -284,67 +345,6 @@ components:
               type: string
               format: date-time
               description: Timestamp of the last message
-    Error:
-      type: object
-      properties:
-        error:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                description: Error type
-              msgId:
-                type: string
-                description: Message identifier
-              explanation:
-                type: string
-                description: Explanation of the error
-              action:
-                type: string
-                description: Suggested action
-  responses:
-    Unauthorized:
-      description: Authentication required or credentials invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid request parameters or body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Requested resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  parameters:
-    channelName:
-      name: channelName
-      in: path
-      required: true
-      description: Name of the channel
-      schema:
-        type: string
-    ibmMqRestCsrfToken:
-      name: ibm-mq-rest-csrf-token
-      in: header
-      required: false
-      description: CSRF token required for state-changing operations
-      schema:
-        type: string
-    qmgrName:
-      name: qmgrName
-      in: path
-      required: true
-      description: Name of the queue manager
-      schema:
-        type: string
   securitySchemes:
     basicAuth:
       type: http

@@ -1,7 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: IBM MQ Administration REST Channels Login API
-  description: REST API for administering and monitoring IBM MQ queue managers, queues, topics, subscriptions, and channels. Provides programmatic access to manage MQ objects and retrieve status information.
+  title: IBM MQ Messaging REST Login API
+  description: REST API for sending and receiving messages via HTTP to IBM MQ queues and topics. Enables lightweight message production and consumption without requiring an MQ client library.
   version: '2.0'
   contact:
     name: IBM Support
@@ -77,14 +77,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  parameters:
-    ibmMqRestCsrfToken:
-      name: ibm-mq-rest-csrf-token
-      in: header
-      required: false
-      description: CSRF token required for state-changing operations
-      schema:
-        type: string
   responses:
     Unauthorized:
       description: Authentication required or credentials invalid
@@ -113,6 +105,14 @@ components:
               action:
                 type: string
                 description: Suggested action
+  parameters:
+    ibmMqRestCsrfToken:
+      name: ibm-mq-rest-csrf-token
+      in: header
+      required: false
+      description: CSRF token required for state-changing operations
+      schema:
+        type: string
   securitySchemes:
     basicAuth:
       type: http
@@ -124,5 +124,5 @@ components:
       name: LtpaToken2
       description: LTPA token-based authentication via login endpoint
 externalDocs:
-  description: IBM MQ REST API Documentation
-  url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest
+  description: IBM MQ Messaging REST API Documentation
+  url: https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest
