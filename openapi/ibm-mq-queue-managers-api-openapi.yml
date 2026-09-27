@@ -104,30 +104,15 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    qmgrName:
-      name: qmgrName
-      in: path
-      required: true
-      description: Name of the queue manager
-      schema:
-        type: string
-    ibmMqRestCsrfToken:
-      name: ibm-mq-rest-csrf-token
-      in: header
-      required: false
-      description: CSRF token required for state-changing operations
-      schema:
-        type: string
   responses:
-    Unauthorized:
-      description: Authentication required or credentials invalid
+    BadRequest:
+      description: Invalid request parameters or body
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid request parameters or body
+    Unauthorized:
+      description: Authentication required or credentials invalid
       content:
         application/json:
           schema:
@@ -138,27 +123,22 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  parameters:
+    ibmMqRestCsrfToken:
+      name: ibm-mq-rest-csrf-token
+      in: header
+      required: false
+      description: CSRF token required for state-changing operations
+      schema:
+        type: string
+    qmgrName:
+      name: qmgrName
+      in: path
+      required: true
+      description: Name of the queue manager
+      schema:
+        type: string
   schemas:
-    Error:
-      type: object
-      properties:
-        error:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                description: Error type
-              msgId:
-                type: string
-                description: Message identifier
-              explanation:
-                type: string
-                description: Explanation of the error
-              action:
-                type: string
-                description: Suggested action
     QueueManager:
       type: object
       properties:
@@ -207,6 +187,26 @@ components:
             channelInitiatorState:
               type: string
               description: State of the channel initiator
+    Error:
+      type: object
+      properties:
+        error:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: Error type
+              msgId:
+                type: string
+                description: Message identifier
+              explanation:
+                type: string
+                description: Explanation of the error
+              action:
+                type: string
+                description: Suggested action
   securitySchemes:
     basicAuth:
       type: http

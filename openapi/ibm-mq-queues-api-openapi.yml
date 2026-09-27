@@ -191,13 +191,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   parameters:
-    qmgrName:
-      name: qmgrName
-      in: path
-      required: true
-      description: Name of the queue manager
-      schema:
-        type: string
     queueName:
       name: queueName
       in: path
@@ -212,7 +205,65 @@ components:
       description: CSRF token required for state-changing operations
       schema:
         type: string
+    qmgrName:
+      name: qmgrName
+      in: path
+      required: true
+      description: Name of the queue manager
+      schema:
+        type: string
+  responses:
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication required or credentials invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Requested resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    QueueCreateRequest:
+      type: object
+      required:
+      - name
+      - type
+      properties:
+        name:
+          type: string
+          description: Name of the new queue
+        type:
+          type: string
+          enum:
+          - local
+          - alias
+          - remote
+          - model
+          description: Type of queue to create
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+              description: Description of the queue
+        extended:
+          type: object
+          properties:
+            maximumDepth:
+              type: integer
+              description: Maximum number of messages on the queue
+            maximumMessageLength:
+              type: integer
+              description: Maximum message length in bytes
     QueueUpdateRequest:
       type: object
       properties:
@@ -310,38 +361,6 @@ components:
               type: string
               format: date-time
               description: Timestamp of the last get
-    QueueCreateRequest:
-      type: object
-      required:
-      - name
-      - type
-      properties:
-        name:
-          type: string
-          description: Name of the new queue
-        type:
-          type: string
-          enum:
-          - local
-          - alias
-          - remote
-          - model
-          description: Type of queue to create
-        general:
-          type: object
-          properties:
-            description:
-              type: string
-              description: Description of the queue
-        extended:
-          type: object
-          properties:
-            maximumDepth:
-              type: integer
-              description: Maximum number of messages on the queue
-            maximumMessageLength:
-              type: integer
-              description: Maximum message length in bytes
     Error:
       type: object
       properties:
@@ -362,25 +381,6 @@ components:
               action:
                 type: string
                 description: Suggested action
-  responses:
-    Unauthorized:
-      description: Authentication required or credentials invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid request parameters or body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Requested resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

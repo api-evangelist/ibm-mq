@@ -92,14 +92,20 @@ paths:
         '404':
           description: Queue manager not found
 components:
+  responses:
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication required or credentials invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
-    qmgrName:
-      name: qmgrName
-      in: path
-      required: true
-      description: Name of the queue manager
-      schema:
-        type: string
     ibmMqRestCsrfToken:
       name: ibm-mq-rest-csrf-token
       in: header
@@ -107,19 +113,13 @@ components:
       description: CSRF token required for state-changing operations
       schema:
         type: string
-  responses:
-    Unauthorized:
-      description: Authentication required or credentials invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid request parameters or body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    qmgrName:
+      name: qmgrName
+      in: path
+      required: true
+      description: Name of the queue manager
+      schema:
+        type: string
   schemas:
     Error:
       type: object

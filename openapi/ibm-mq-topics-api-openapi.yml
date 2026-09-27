@@ -162,37 +162,15 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    qmgrName:
-      name: qmgrName
-      in: path
-      required: true
-      description: Name of the queue manager
-      schema:
-        type: string
-    topicName:
-      name: topicName
-      in: path
-      required: true
-      description: Name of the administrative topic object
-      schema:
-        type: string
-    ibmMqRestCsrfToken:
-      name: ibm-mq-rest-csrf-token
-      in: header
-      required: false
-      description: CSRF token required for state-changing operations
-      schema:
-        type: string
   responses:
-    Unauthorized:
-      description: Authentication required or credentials invalid
+    BadRequest:
+      description: Invalid request parameters or body
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid request parameters or body
+    Unauthorized:
+      description: Authentication required or credentials invalid
       content:
         application/json:
           schema:
@@ -203,7 +181,70 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  parameters:
+    ibmMqRestCsrfToken:
+      name: ibm-mq-rest-csrf-token
+      in: header
+      required: false
+      description: CSRF token required for state-changing operations
+      schema:
+        type: string
+    topicName:
+      name: topicName
+      in: path
+      required: true
+      description: Name of the administrative topic object
+      schema:
+        type: string
+    qmgrName:
+      name: qmgrName
+      in: path
+      required: true
+      description: Name of the queue manager
+      schema:
+        type: string
   schemas:
+    Topic:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the administrative topic object
+        topicString:
+          type: string
+          description: The topic string associated with this topic object
+        type:
+          type: string
+          description: Topic type
+        general:
+          type: object
+          description: General topic attributes
+          properties:
+            description:
+              type: string
+              description: Description of the topic
+            durableSubscriptions:
+              type: string
+              enum:
+              - allowed
+              - notAllowed
+              description: Whether durable subscriptions are allowed
+            defaultPutResponse:
+              type: string
+              description: Default put response type
+    TopicUpdateRequest:
+      type: object
+      properties:
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+            durableSubscriptions:
+              type: string
+              enum:
+              - allowed
+              - notAllowed
     Error:
       type: object
       properties:
@@ -241,47 +282,6 @@ components:
           properties:
             description:
               type: string
-    TopicUpdateRequest:
-      type: object
-      properties:
-        general:
-          type: object
-          properties:
-            description:
-              type: string
-            durableSubscriptions:
-              type: string
-              enum:
-              - allowed
-              - notAllowed
-    Topic:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the administrative topic object
-        topicString:
-          type: string
-          description: The topic string associated with this topic object
-        type:
-          type: string
-          description: Topic type
-        general:
-          type: object
-          description: General topic attributes
-          properties:
-            description:
-              type: string
-              description: Description of the topic
-            durableSubscriptions:
-              type: string
-              enum:
-              - allowed
-              - notAllowed
-              description: Whether durable subscriptions are allowed
-            defaultPutResponse:
-              type: string
-              description: Default put response type
   securitySchemes:
     basicAuth:
       type: http

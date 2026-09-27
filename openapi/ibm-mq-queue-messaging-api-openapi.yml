@@ -218,13 +218,6 @@ paths:
           description: Queue manager or queue not found
 components:
   parameters:
-    qmgrName:
-      name: qmgrName
-      in: path
-      required: true
-      description: Name of the queue manager
-      schema:
-        type: string
     queueName:
       name: queueName
       in: path
@@ -239,15 +232,22 @@ components:
       description: CSRF token required for state-changing operations
       schema:
         type: string
+    qmgrName:
+      name: qmgrName
+      in: path
+      required: true
+      description: Name of the queue manager
+      schema:
+        type: string
   responses:
-    Unauthorized:
-      description: Authentication required or credentials invalid
+    BadRequest:
+      description: Invalid request parameters or body
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid request parameters or body
+    Unauthorized:
+      description: Authentication required or credentials invalid
       content:
         application/json:
           schema:

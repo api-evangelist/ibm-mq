@@ -34,6 +34,7 @@ tags:
   - Messaging
   - Middleware
   - Queues
+  - Real-Time
 tags_raw:
   - Async
   - Enterprise
@@ -41,6 +42,7 @@ tags_raw:
   - Messaging
   - Middleware
   - Queue
+  - Real-Time
 created: '2024-01-20'
 modified: '2026-05-19'
 url: https://www.ibm.com/products/mq

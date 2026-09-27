@@ -187,7 +187,33 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication required or credentials invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Requested resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
+    ibmMqRestCsrfToken:
+      name: ibm-mq-rest-csrf-token
+      in: header
+      required: false
+      description: CSRF token required for state-changing operations
+      schema:
+        type: string
     qmgrName:
       name: qmgrName
       in: path
@@ -202,63 +228,7 @@ components:
       description: Name of the channel
       schema:
         type: string
-    ibmMqRestCsrfToken:
-      name: ibm-mq-rest-csrf-token
-      in: header
-      required: false
-      description: CSRF token required for state-changing operations
-      schema:
-        type: string
-  responses:
-    Unauthorized:
-      description: Authentication required or credentials invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Invalid request parameters or body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Requested resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    ChannelUpdateRequest:
-      type: object
-      properties:
-        general:
-          type: object
-          properties:
-            description:
-              type: string
-            connectionName:
-              type: string
-    Error:
-      type: object
-      properties:
-        error:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                description: Error type
-              msgId:
-                type: string
-                description: Message identifier
-              explanation:
-                type: string
-                description: Explanation of the error
-              action:
-                type: string
-                description: Suggested action
     ChannelCreateRequest:
       type: object
       required:
@@ -290,6 +260,26 @@ components:
               type: string
             transmissionQueue:
               type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: Error type
+              msgId:
+                type: string
+                description: Message identifier
+              explanation:
+                type: string
+                description: Explanation of the error
+              action:
+                type: string
+                description: Suggested action
     Channel:
       type: object
       properties:
@@ -345,6 +335,16 @@ components:
               type: string
               format: date-time
               description: Timestamp of the last message
+    ChannelUpdateRequest:
+      type: object
+      properties:
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+            connectionName:
+              type: string
   securitySchemes:
     basicAuth:
       type: http
