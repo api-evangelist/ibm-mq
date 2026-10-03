@@ -206,60 +206,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    ibmMqRestCsrfToken:
-      name: ibm-mq-rest-csrf-token
-      in: header
-      required: false
-      description: CSRF token required for state-changing operations
-      schema:
-        type: string
-    qmgrName:
-      name: qmgrName
-      in: path
-      required: true
-      description: Name of the queue manager
-      schema:
-        type: string
-    channelName:
-      name: channelName
-      in: path
-      required: true
-      description: Name of the channel
-      schema:
-        type: string
   schemas:
-    ChannelCreateRequest:
-      type: object
-      required:
-      - name
-      - type
-      properties:
-        name:
-          type: string
-          description: Name of the channel
-        type:
-          type: string
-          enum:
-          - sender
-          - receiver
-          - server
-          - requester
-          - serverConnection
-          - clusterSender
-          - clusterReceiver
-          - clientConnection
-          - amqp
-          description: Type of channel to create
-        general:
-          type: object
-          properties:
-            description:
-              type: string
-            connectionName:
-              type: string
-            transmissionQueue:
-              type: string
     Error:
       type: object
       properties:
@@ -280,6 +227,16 @@ components:
               action:
                 type: string
                 description: Suggested action
+    ChannelUpdateRequest:
+      type: object
+      properties:
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+            connectionName:
+              type: string
     Channel:
       type: object
       properties:
@@ -335,9 +292,28 @@ components:
               type: string
               format: date-time
               description: Timestamp of the last message
-    ChannelUpdateRequest:
+    ChannelCreateRequest:
       type: object
+      required:
+      - name
+      - type
       properties:
+        name:
+          type: string
+          description: Name of the channel
+        type:
+          type: string
+          enum:
+          - sender
+          - receiver
+          - server
+          - requester
+          - serverConnection
+          - clusterSender
+          - clusterReceiver
+          - clientConnection
+          - amqp
+          description: Type of channel to create
         general:
           type: object
           properties:
@@ -345,6 +321,30 @@ components:
               type: string
             connectionName:
               type: string
+            transmissionQueue:
+              type: string
+  parameters:
+    channelName:
+      name: channelName
+      in: path
+      required: true
+      description: Name of the channel
+      schema:
+        type: string
+    qmgrName:
+      name: qmgrName
+      in: path
+      required: true
+      description: Name of the queue manager
+      schema:
+        type: string
+    ibmMqRestCsrfToken:
+      name: ibm-mq-rest-csrf-token
+      in: header
+      required: false
+      description: CSRF token required for state-changing operations
+      schema:
+        type: string
   securitySchemes:
     basicAuth:
       type: http

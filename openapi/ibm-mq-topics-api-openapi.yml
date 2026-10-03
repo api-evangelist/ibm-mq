@@ -162,33 +162,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    BadRequest:
-      description: Invalid request parameters or body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication required or credentials invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Requested resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
-    ibmMqRestCsrfToken:
-      name: ibm-mq-rest-csrf-token
-      in: header
-      required: false
-      description: CSRF token required for state-changing operations
-      schema:
-        type: string
     topicName:
       name: topicName
       in: path
@@ -201,6 +175,13 @@ components:
       in: path
       required: true
       description: Name of the queue manager
+      schema:
+        type: string
+    ibmMqRestCsrfToken:
+      name: ibm-mq-rest-csrf-token
+      in: header
+      required: false
+      description: CSRF token required for state-changing operations
       schema:
         type: string
   schemas:
@@ -232,19 +213,23 @@ components:
             defaultPutResponse:
               type: string
               description: Default put response type
-    TopicUpdateRequest:
+    TopicCreateRequest:
       type: object
+      required:
+      - name
+      - topicString
       properties:
+        name:
+          type: string
+          description: Name of the topic object
+        topicString:
+          type: string
+          description: The topic string
         general:
           type: object
           properties:
             description:
               type: string
-            durableSubscriptions:
-              type: string
-              enum:
-              - allowed
-              - notAllowed
     Error:
       type: object
       properties:
@@ -265,23 +250,38 @@ components:
               action:
                 type: string
                 description: Suggested action
-    TopicCreateRequest:
+    TopicUpdateRequest:
       type: object
-      required:
-      - name
-      - topicString
       properties:
-        name:
-          type: string
-          description: Name of the topic object
-        topicString:
-          type: string
-          description: The topic string
         general:
           type: object
           properties:
             description:
               type: string
+            durableSubscriptions:
+              type: string
+              enum:
+              - allowed
+              - notAllowed
+  responses:
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication required or credentials invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Requested resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     basicAuth:
       type: http

@@ -190,99 +190,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    queueName:
-      name: queueName
-      in: path
-      required: true
-      description: Name of the queue
-      schema:
-        type: string
-    ibmMqRestCsrfToken:
-      name: ibm-mq-rest-csrf-token
-      in: header
-      required: false
-      description: CSRF token required for state-changing operations
-      schema:
-        type: string
-    qmgrName:
-      name: qmgrName
-      in: path
-      required: true
-      description: Name of the queue manager
-      schema:
-        type: string
-  responses:
-    BadRequest:
-      description: Invalid request parameters or body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication required or credentials invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Requested resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    QueueCreateRequest:
-      type: object
-      required:
-      - name
-      - type
-      properties:
-        name:
-          type: string
-          description: Name of the new queue
-        type:
-          type: string
-          enum:
-          - local
-          - alias
-          - remote
-          - model
-          description: Type of queue to create
-        general:
-          type: object
-          properties:
-            description:
-              type: string
-              description: Description of the queue
-        extended:
-          type: object
-          properties:
-            maximumDepth:
-              type: integer
-              description: Maximum number of messages on the queue
-            maximumMessageLength:
-              type: integer
-              description: Maximum message length in bytes
-    QueueUpdateRequest:
-      type: object
-      properties:
-        general:
-          type: object
-          properties:
-            description:
-              type: string
-            inhibitPut:
-              type: boolean
-            inhibitGet:
-              type: boolean
-        extended:
-          type: object
-          properties:
-            maximumDepth:
-              type: integer
-            maximumMessageLength:
-              type: integer
     Queue:
       type: object
       properties:
@@ -381,6 +289,98 @@ components:
               action:
                 type: string
                 description: Suggested action
+    QueueCreateRequest:
+      type: object
+      required:
+      - name
+      - type
+      properties:
+        name:
+          type: string
+          description: Name of the new queue
+        type:
+          type: string
+          enum:
+          - local
+          - alias
+          - remote
+          - model
+          description: Type of queue to create
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+              description: Description of the queue
+        extended:
+          type: object
+          properties:
+            maximumDepth:
+              type: integer
+              description: Maximum number of messages on the queue
+            maximumMessageLength:
+              type: integer
+              description: Maximum message length in bytes
+    QueueUpdateRequest:
+      type: object
+      properties:
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+            inhibitPut:
+              type: boolean
+            inhibitGet:
+              type: boolean
+        extended:
+          type: object
+          properties:
+            maximumDepth:
+              type: integer
+            maximumMessageLength:
+              type: integer
+  responses:
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication required or credentials invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Requested resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    queueName:
+      name: queueName
+      in: path
+      required: true
+      description: Name of the queue
+      schema:
+        type: string
+    qmgrName:
+      name: qmgrName
+      in: path
+      required: true
+      description: Name of the queue manager
+      schema:
+        type: string
+    ibmMqRestCsrfToken:
+      name: ibm-mq-rest-csrf-token
+      in: header
+      required: false
+      description: CSRF token required for state-changing operations
+      schema:
+        type: string
   securitySchemes:
     basicAuth:
       type: http
