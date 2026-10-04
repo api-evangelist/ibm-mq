@@ -187,25 +187,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    BadRequest:
-      description: Invalid request parameters or body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication required or credentials invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Requested resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     Error:
       type: object
@@ -227,16 +208,6 @@ components:
               action:
                 type: string
                 description: Suggested action
-    ChannelUpdateRequest:
-      type: object
-      properties:
-        general:
-          type: object
-          properties:
-            description:
-              type: string
-            connectionName:
-              type: string
     Channel:
       type: object
       properties:
@@ -323,12 +294,41 @@ components:
               type: string
             transmissionQueue:
               type: string
+    ChannelUpdateRequest:
+      type: object
+      properties:
+        general:
+          type: object
+          properties:
+            description:
+              type: string
+            connectionName:
+              type: string
+  responses:
+    NotFound:
+      description: Requested resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication required or credentials invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
-    channelName:
-      name: channelName
-      in: path
-      required: true
-      description: Name of the channel
+    ibmMqRestCsrfToken:
+      name: ibm-mq-rest-csrf-token
+      in: header
+      required: false
+      description: CSRF token required for state-changing operations
       schema:
         type: string
     qmgrName:
@@ -338,11 +338,11 @@ components:
       description: Name of the queue manager
       schema:
         type: string
-    ibmMqRestCsrfToken:
-      name: ibm-mq-rest-csrf-token
-      in: header
-      required: false
-      description: CSRF token required for state-changing operations
+    channelName:
+      name: channelName
+      in: path
+      required: true
+      description: Name of the channel
       schema:
         type: string
   securitySchemes:

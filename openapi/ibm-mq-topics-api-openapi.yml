@@ -162,29 +162,44 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    topicName:
-      name: topicName
-      in: path
-      required: true
-      description: Name of the administrative topic object
-      schema:
-        type: string
-    qmgrName:
-      name: qmgrName
-      in: path
-      required: true
-      description: Name of the queue manager
-      schema:
-        type: string
-    ibmMqRestCsrfToken:
-      name: ibm-mq-rest-csrf-token
-      in: header
-      required: false
-      description: CSRF token required for state-changing operations
-      schema:
-        type: string
   schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                description: Error type
+              msgId:
+                type: string
+                description: Message identifier
+              explanation:
+                type: string
+                description: Explanation of the error
+              action:
+                type: string
+                description: Suggested action
+    TopicCreateRequest:
+      type: object
+      required:
+      - name
+      - topicString
+      properties:
+        name:
+          type: string
+          description: Name of the topic object
+        topicString:
+          type: string
+          description: The topic string
+        general:
+          type: object
+          properties:
+            description:
+              type: string
     Topic:
       type: object
       properties:
@@ -213,43 +228,6 @@ components:
             defaultPutResponse:
               type: string
               description: Default put response type
-    TopicCreateRequest:
-      type: object
-      required:
-      - name
-      - topicString
-      properties:
-        name:
-          type: string
-          description: Name of the topic object
-        topicString:
-          type: string
-          description: The topic string
-        general:
-          type: object
-          properties:
-            description:
-              type: string
-    Error:
-      type: object
-      properties:
-        error:
-          type: array
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                description: Error type
-              msgId:
-                type: string
-                description: Message identifier
-              explanation:
-                type: string
-                description: Explanation of the error
-              action:
-                type: string
-                description: Suggested action
     TopicUpdateRequest:
       type: object
       properties:
@@ -264,6 +242,12 @@ components:
               - allowed
               - notAllowed
   responses:
+    NotFound:
+      description: Requested resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     BadRequest:
       description: Invalid request parameters or body
       content:
@@ -276,12 +260,28 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: Requested resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+  parameters:
+    qmgrName:
+      name: qmgrName
+      in: path
+      required: true
+      description: Name of the queue manager
+      schema:
+        type: string
+    ibmMqRestCsrfToken:
+      name: ibm-mq-rest-csrf-token
+      in: header
+      required: false
+      description: CSRF token required for state-changing operations
+      schema:
+        type: string
+    topicName:
+      name: topicName
+      in: path
+      required: true
+      description: Name of the administrative topic object
+      schema:
+        type: string
   securitySchemes:
     basicAuth:
       type: http
