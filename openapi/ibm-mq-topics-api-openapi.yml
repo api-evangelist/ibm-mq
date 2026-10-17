@@ -242,8 +242,8 @@ components:
               - allowed
               - notAllowed
   responses:
-    NotFound:
-      description: Requested resource not found
+    Unauthorized:
+      description: Authentication required or credentials invalid
       content:
         application/json:
           schema:
@@ -254,18 +254,18 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication required or credentials invalid
+    NotFound:
+      description: Requested resource not found
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
   parameters:
-    qmgrName:
-      name: qmgrName
+    topicName:
+      name: topicName
       in: path
       required: true
-      description: Name of the queue manager
+      description: Name of the administrative topic object
       schema:
         type: string
     ibmMqRestCsrfToken:
@@ -275,11 +275,11 @@ components:
       description: CSRF token required for state-changing operations
       schema:
         type: string
-    topicName:
-      name: topicName
+    qmgrName:
+      name: qmgrName
       in: path
       required: true
-      description: Name of the administrative topic object
+      description: Name of the queue manager
       schema:
         type: string
   securitySchemes:

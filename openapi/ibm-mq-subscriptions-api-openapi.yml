@@ -158,6 +158,29 @@ components:
               action:
                 type: string
                 description: Suggested action
+    SubscriptionCreateRequest:
+      type: object
+      required:
+      - name
+      - topicString
+      - general
+      properties:
+        name:
+          type: string
+          description: Name of the subscription
+        topicString:
+          type: string
+          description: Topic string to subscribe to
+        general:
+          type: object
+          required:
+          - destination
+          properties:
+            description:
+              type: string
+            destination:
+              type: string
+              description: Destination queue for messages
     Subscription:
       type: object
       properties:
@@ -194,32 +217,9 @@ components:
               - durable
               - nonDurable
               description: Whether the subscription persists across restarts
-    SubscriptionCreateRequest:
-      type: object
-      required:
-      - name
-      - topicString
-      - general
-      properties:
-        name:
-          type: string
-          description: Name of the subscription
-        topicString:
-          type: string
-          description: Topic string to subscribe to
-        general:
-          type: object
-          required:
-          - destination
-          properties:
-            description:
-              type: string
-            destination:
-              type: string
-              description: Destination queue for messages
   responses:
-    NotFound:
-      description: Requested resource not found
+    Unauthorized:
+      description: Authentication required or credentials invalid
       content:
         application/json:
           schema:
@@ -230,8 +230,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication required or credentials invalid
+    NotFound:
+      description: Requested resource not found
       content:
         application/json:
           schema:

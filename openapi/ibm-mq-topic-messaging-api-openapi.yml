@@ -114,14 +114,14 @@ components:
                 type: string
                 description: Suggested action
   responses:
-    BadRequest:
-      description: Invalid request parameters or body
+    Unauthorized:
+      description: Authentication required or credentials invalid
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication required or credentials invalid
+    BadRequest:
+      description: Invalid request parameters or body
       content:
         application/json:
           schema:
