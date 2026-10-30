@@ -1,4 +1,4 @@
-# IBM MQ (ibm-mq)
+# IBM MQ
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,124 +66,174 @@
 
 APIs for IBM MQ messaging middleware for enterprise integration.
 
-**APIs.json:** [https://www.ibm.com/products/mq](https://www.ibm.com/products/mq)
+**Areas:** Async · Enterprise · Integration · Messaging · Middleware · Queues · Real-Time
 
-## Tags
+## IBM MQ on APIs.io
 
-- Async
-- Enterprise
-- Integration
-- Messaging
-- Middleware
-- Queue
+Everything profiled for IBM MQ is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/ibm-mq/](https://apis.io/providers/ibm-mq/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (11)
 
-- **Created:** 2024-01-20
-- **Modified:** 2026-05-19
+- [IBM MQ JMS API](https://apis.io/apis/ibm-mq/ibm-mq-jms-api/) — Java Message Service API for IBM MQ.
+- [IBM MQ Native API](https://apis.io/apis/ibm-mq/ibm-mq-native-api/) — Native procedural API for IBM MQ (MQI).
+- [IBM MQ Channels API](https://apis.io/apis/ibm-mq/ibm-mq-channels-api/) — Manage and query channel objects and status
+- [IBM MQ Installations API](https://apis.io/apis/ibm-mq/ibm-mq-installations-api/) — Query MQ installation information
+- [IBM MQ Login API](https://apis.io/apis/ibm-mq/ibm-mq-login-api/) — Authentication token management
+- [IBM MQ Queue Managers API](https://apis.io/apis/ibm-mq/ibm-mq-queue-managers-api/) — Manage and query queue manager objects and status
+- [IBM MQ Queue Messaging API](https://apis.io/apis/ibm-mq/ibm-mq-queue-messaging-api/) — Send and receive messages on queues
+- [IBM MQ Queues API](https://apis.io/apis/ibm-mq/ibm-mq-queues-api/) — Manage and query queue objects and status
+- [IBM MQ Subscriptions API](https://apis.io/apis/ibm-mq/ibm-mq-subscriptions-api/) — Manage and query subscription objects
+- [IBM MQ Topic Messaging API](https://apis.io/apis/ibm-mq/ibm-mq-topic-messaging-api/) — Publish messages to topics
+- [IBM MQ Topics API](https://apis.io/apis/ibm-mq/ibm-mq-topics-api/) — Manage and query topic objects
 
-## APIs
+### Published properties
 
-### IBM MQ REST API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-REST API for managing and monitoring IBM MQ queue managers, queues, topics, and channels.
+#### AsyncAPI (1)
 
-- **Human URL:** [https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest-overview](https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest-overview)
-- **Base URL:** `https://{host}:{port}/ibmmq/rest/v2`
+Event-driven and webhook contracts.
 
-#### Tags
+- [IBM MQ Messaging](https://apis.io/asyncapis/ibm-mq/ibm-mq-messaging-asyncapi/)
 
-- Admin
-- Messaging
-- Rest
+#### Event channels (4)
 
-#### Properties
+Individual events and webhooks the provider emits.
 
-- [Documentation](https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-rest)
-- [openapi](https://www.ibm.com/docs/en/SSFKSJ_9.3.0/com.ibm.mq.dev.doc/rest_api_swagger.json) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [OpenAPI](openapi/ibm-mq-admin-rest-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/ibm-mq-admin-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-mq-admin-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [deadLetterQueue](https://apis.io/channels/ibm-mq/deadletterqueue/)
+- [queue/{queueName}](https://apis.io/channels/ibm-mq/queue-queuename/)
+- [requestReply/{requestQueue}](https://apis.io/channels/ibm-mq/requestreply-requestqueue/)
+- [topic/{topicString}](https://apis.io/channels/ibm-mq/topic-topicstring/)
 
-### IBM MQ Messaging REST API
+#### Agentic access (1)
 
-REST API for sending and receiving messages via HTTP.
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- **Human URL:** [https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest](https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest)
-- **Base URL:** `https://{host}:{port}/ibmmq/rest/v2/messaging`
+- [Ibm Mq Agentic Access](https://apis.io/agentic-access/ibm-mq/ibm-mq-agentic-access/)
 
-#### Tags
+#### JSON Schema (2)
 
-- Consumer
-- Messaging
-- Producer
-- Rest
+The data models the API reads and writes.
 
-#### Properties
+- [IBM MQ Queue](https://apis.io/schemas/ibm-mq/ibm-mq-queue/)
+- [IBM MQ Queue Manager](https://apis.io/schemas/ibm-mq/ibm-mq-queue-manager/)
 
-- [Documentation](https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-messaging-rest)
-- [openapi](https://www.ibm.com/docs/en/SSFKSJ_9.3.0/com.ibm.mq.dev.doc/messaging_rest_api_swagger.json) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [OpenAPI](openapi/ibm-mq-messaging-rest-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/ibm-mq-messaging-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-mq-messaging-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### JSON-LD (1)
 
-### IBM MQ JMS API
+Linked-data contexts for the provider's vocabulary.
 
-Java Message Service API for IBM MQ.
+- [Ibm Mq Context](https://apis.io/jsonld/ibm-mq/ibm-mq-context/)
 
-- **Human URL:** [https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-jms](https://www.ibm.com/docs/en/ibm-mq/latest?topic=api-jms)
+#### Collections (11)
 
-#### Tags
+Postman and Open Collection request collections.
 
-- Java
-- Jms
-- Messaging
+- [IBM MQ Administration REST API](https://apis.io/collections/ibm-mq/open-ibm-mq-admin-rest/)
+- [IBM MQ Administration REST Channels API](https://apis.io/collections/ibm-mq/open-ibm-mq-channels-api/)
+- [IBM MQ Administration REST Channels Installations API](https://apis.io/collections/ibm-mq/open-ibm-mq-installations-api/)
+- [IBM MQ Administration REST Channels Login API](https://apis.io/collections/ibm-mq/open-ibm-mq-login-api/)
+- [IBM MQ Messaging REST API](https://apis.io/collections/ibm-mq/open-ibm-mq-messaging-rest/)
+- [IBM MQ Administration REST Channels Queue Managers API](https://apis.io/collections/ibm-mq/open-ibm-mq-queue-managers-api/)
+- [IBM MQ Administration REST Channels Queue Messaging API](https://apis.io/collections/ibm-mq/open-ibm-mq-queue-messaging-api/)
+- [IBM MQ Administration REST Channels Queues API](https://apis.io/collections/ibm-mq/open-ibm-mq-queues-api/)
+- [IBM MQ Administration REST Channels Subscriptions API](https://apis.io/collections/ibm-mq/open-ibm-mq-subscriptions-api/)
+- [IBM MQ Administration REST Channels Topic Messaging API](https://apis.io/collections/ibm-mq/open-ibm-mq-topic-messaging-api/)
+- [IBM MQ Administration REST Channels Topics API](https://apis.io/collections/ibm-mq/open-ibm-mq-topics-api/)
 
-#### Properties
+#### Governance rules (3)
 
-- [Documentation](https://www.ibm.com/docs/en/ibm-mq/latest?topic=mq-developing-jms-applications)
-- [sdk](https://mvnrepository.com/artifact/com.ibm.mq/com.ibm.mq.allclient)
-- [AsyncAPI](asyncapi/ibm-mq-messaging-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
-- [Postman Collection](collections/ibm-mq-admin-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-mq-admin-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/ibm-mq-messaging-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-mq-messaging-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Spectral rulesets for the provider's contracts.
 
-### IBM MQ Native API
+- [IBM MQ — asyncapi rules](https://apis.io/rules/ibm-mq/ibm-mq-asyncapi-spectral-rules/)
+- [IBM MQ — jsonschema rules](https://apis.io/rules/ibm-mq/ibm-mq-jsonschema-spectral-rules/)
+- [IBM MQ API Rules](https://apis.io/rules/ibm-mq/ibm-mq-rules/)
 
-Native procedural API for IBM MQ (MQI).
+#### Security (3)
 
-- **Human URL:** [https://www.ibm.com/docs/en/ibm-mq/latest?topic=reference-mqi](https://www.ibm.com/docs/en/ibm-mq/latest?topic=reference-mqi)
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Tags
+- [Ibm Mq Authentication](https://apis.io/security/ibm-mq/ibm-mq-authentication/)
+- [Ibm Mq Domain Security](https://apis.io/security/ibm-mq/ibm-mq-domain-security/)
+- [Ibm Mq Vulnerability Disclosure](https://apis.io/security/ibm-mq/ibm-mq-vulnerability-disclosure/)
 
-- Mqi
-- Native
-- Procedural
+#### Plans and pricing (1)
 
-#### Properties
+Published plans, tiers and prices.
 
-- [Documentation](https://www.ibm.com/docs/en/ibm-mq/latest?topic=programming-mqi)
-- [Postman Collection](collections/ibm-mq-admin-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-mq-admin-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/ibm-mq-messaging-rest.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ibm-mq-messaging-rest.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Ibm Mq Plans Pricing](https://apis.io/plans/ibm-mq/ibm-mq-plans-pricing/)
 
-## Common Properties
+#### Rate limits (1)
 
-- [GitHub Organization](https://github.com/ibm-messaging)
-- [getting-started](https://www.ibm.com/docs/en/ibm-mq/latest?topic=mq-getting-started)
-- [tutorials](https://developer.ibm.com/tutorials/?s=mq)
-- [downloads](https://www.ibm.com/support/pages/downloading-ibm-mq)
-- [pricing](https://www.ibm.com/products/mq/pricing)
-- [support](https://www.ibm.com/mysupport)
-- [blog](https://community.ibm.com/community/user/integration/communities/community-home?CommunityKey=183ec850-4947-49c8-9a2e-8e7c7fc46c64)
-- [JSON-LD](json-ld/ibm-mq-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-- [JSON Schema](json-schema/ibm-mq-queue-manager-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/ibm-mq-queue-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [Rules](rules/ibm-mq-rules.yml)
+Published request limits.
 
-## Maintainers
+- [Ibm Mq Rate Limits](https://apis.io/rate-limits/ibm-mq/ibm-mq-rate-limits/)
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Ibm Mq Finops](https://apis.io/finops/ibm-mq/ibm-mq-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.ibm.com/)
+- [Getting started](https://www.ibm.com/docs/en/ibm-mq/latest?topic=mq-getting-started)
+- [Pricing](https://www.ibm.com/products/mq/pricing)
+- [Support](https://www.ibm.com/mysupport)
+- [Blog](https://community.ibm.com/community/user/integration/communities/community-home?CommunityKey=183ec850-4947-49c8-9a2e-8e7c7fc46c64)
+- [GitHub](https://github.com/ibm-messaging)
+
+## API Evangelist rating
+
+**Kin Score 37.5** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 55.4 |
+| Contract quality | 61.4 |
+| Contract governance | 13.6 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 47.6 |
+| Access clarity | 18.4 |
+
+**Agent readiness 19.0** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 22.5** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/ibm-mq/](https://apis.io/providers/ibm-mq/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for IBM MQ: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/ibm-mq/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
